@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>힐스테이트 양산더스카이 고객 브리핑</title>
+<style>
+@font-face { font-family: 'NSKR'; font-weight: 400; src: url('FONT_DIR/r.ttf'); }
+@font-face { font-family: 'NSKR'; font-weight: 700; src: url('FONT_DIR/b.ttf'); }
+@font-face { font-family: 'NSKR'; font-weight: 900; src: url('FONT_DIR/k.ttf'); }
+:root {
+  --navy: #0f2a44; --navy2: #17395c; --blue: #2466a8; --gold: #b07a1c; --gold-lt: #e9c77b;
+  --ink: #1b2330; --ink2: #4a5566; --muted: #8a93a3; --line: #e3e6eb; --bg: #fcfcfb; --tint: #f3f5f8;
+}
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { word-break: keep-all; background: var(--bg); color: var(--ink); font-family: 'NSKR', 'Noto Sans KR', 'Malgun Gothic', sans-serif; }
+.slide { width: 1280px; height: 720px; position: relative; overflow: hidden; page-break-after: always; background: var(--bg); padding: 56px 72px 48px; }
+.slide:last-child { page-break-after: auto; }
+.eyebrow { font-size: 15px; font-weight: 700; letter-spacing: .12em; color: var(--gold); margin-bottom: 10px; }
+h2 { font-size: 38px; font-weight: 900; letter-spacing: -0.02em; color: var(--navy); line-height: 1.2; }
+.lead { font-size: 18px; color: var(--ink2); margin-top: 10px; line-height: 1.55; }
+.foot { position: absolute; left: 72px; right: 72px; bottom: 22px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* cover */
+.cover { background: linear-gradient(135deg, #0b2036 0%, #143a60 60%, #1d4c78 100%); color: #fff; padding: 0; }
+.cover .sky { position: absolute; inset: 0; }
+.cover .inner { position: absolute; left: 88px; top: 150px; right: 88px; }
+.cover .tag { display: inline-block; font-size: 16px; font-weight: 700; color: var(--gold-lt); border: 1px solid rgba(233,199,123,.6); padding: 6px 16px; border-radius: 999px; letter-spacing: .08em; }
+.cover h1 { font-size: 76px; font-weight: 900; letter-spacing: -0.03em; margin-top: 26px; line-height: 1.1; }
+.cover h1 span { color: var(--gold-lt); }
+.cover .sub { font-size: 22px; margin-top: 20px; color: rgba(255,255,255,.85); }
+.cover .chips { display: flex; gap: 14px; margin-top: 48px; }
+.cover .chip { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 14px 22px; }
+.cover .chip b { display: block; font-size: 28px; font-weight: 900; }
+.cover .chip small { font-size: 14px; color: rgba(255,255,255,.72); }
+.cover .bottom { position: absolute; left: 88px; bottom: 40px; font-size: 13px; color: rgba(255,255,255,.6); }
+
+/* KPI tiles */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 34px; }
+.kpi { background: var(--tint); border-radius: 14px; padding: 22px 24px; border-top: 4px solid var(--navy); }
+.kpi .v { font-size: 40px; font-weight: 900; color: var(--navy); line-height: 1.1; }
+.kpi .v small { font-size: 20px; font-weight: 700; margin-left: 2px; }
+.kpi .k { font-size: 15px; color: var(--ink2); margin-top: 6px; }
+table.spec { width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 17px; }
+table.spec th { text-align: left; width: 190px; color: var(--ink2); font-weight: 700; padding: 13px 16px; background: var(--tint); border-bottom: 1px solid #fff; }
+table.spec td { padding: 13px 18px; border-bottom: 1px solid var(--line); }
+
+/* complex compare */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 30px; }
+.card { border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; background: #fff; }
+.card h3 { font-size: 24px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+.card h3 .dot { width: 14px; height: 14px; border-radius: 4px; }
+.card .addr { font-size: 15px; color: var(--ink2); margin-top: 6px; }
+.card dl { display: grid; grid-template-columns: 110px 1fr; row-gap: 12px; margin-top: 20px; font-size: 17px; }
+.card dt { color: var(--muted); }
+.card dd { font-weight: 700; }
+.types { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font-size: 15px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--tint); color: var(--navy); }
+.pill.hl { background: var(--navy); color: #fff; }
+.banner { margin-top: 26px; display: flex; align-items: center; gap: 28px; background: var(--navy); color: #fff; border-radius: 16px; padding: 22px 30px; }
+.banner .big { font-size: 46px; font-weight: 900; color: var(--gold-lt); }
+.banner p { font-size: 18px; line-height: 1.5; }
+
+/* price chart */
+.chart-wrap { display: grid; grid-template-columns: 1.45fr 1fr; gap: 36px; margin-top: 26px; }
+.legend { display: flex; gap: 20px; font-size: 14px; color: var(--ink2); margin-bottom: 10px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.side { display: flex; flex-direction: column; gap: 14px; }
+.box { background: var(--tint); border-radius: 14px; padding: 20px 22px; }
+.box h4 { font-size: 16px; color: var(--gold); font-weight: 900; margin-bottom: 6px; }
+.box .v { font-size: 30px; font-weight: 900; color: var(--navy); }
+.box p { font-size: 15px; color: var(--ink2); line-height: 1.5; }
+.note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* timeline for payment */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 24px; position: relative; }
+.step { padding: 0 18px; position: relative; }
+.step .circle { width: 64px; height: 64px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.step.gold .circle { background: var(--gold); }
+.steps::before { content: ''; position: absolute; left: 50px; right: 50px; top: 31px; height: 2px; background: var(--line); }
+.step h4 { font-size: 22px; font-weight: 900; color: var(--navy); margin-top: 14px; }
+.step p { font-size: 16px; color: var(--ink2); margin-top: 6px; line-height: 1.55; }
+.calc { margin-top: 22px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
+.calc .box .row { display: flex; justify-content: space-between; font-size: 16px; padding: 6px 0; border-bottom: 1px dashed #d5dae2; }
+.calc .box .row:last-child { border-bottom: 0; }
+.calc .box .row b { color: var(--navy); }
+.badge3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.badge { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 11px 18px; }
+.badge .ic { width: 44px; height: 44px; font-size: 15px !important; border-radius: 10px; background: var(--navy); color: var(--gold-lt); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; flex: none; }
+.badge b { font-size: 18px; color: var(--navy); }
+.badge span { display: block; font-size: 14px; color: var(--ink2); }
+
+/* location diagram */
+.loc { display: grid; grid-template-columns: 1.25fr 1fr; gap: 30px; margin-top: 22px; }
+.diagram { background: var(--tint); border-radius: 16px; height: 470px; position: relative; }
+.list { display: flex; flex-direction: column; gap: 12px; }
+.li { display: flex; gap: 14px; align-items: flex-start; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.li .t { flex: none; width: 92px; font-size: 13px; font-weight: 700; color: #fff; background: var(--navy); border-radius: 6px; padding: 4px 0; text-align: center; margin-top: 2px; }
+.li .t.g { background: var(--gold); }
+.li div b { font-size: 17px; color: var(--ink); }
+.li div span { display: block; font-size: 14px; color: var(--ink2); margin-top: 2px; }
+
+/* infra grid */
+.grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 26px; }
+.infra { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 26px; display: flex; gap: 20px; }
+.infra .icon { flex: none; width: 56px; height: 56px; border-radius: 14px; background: var(--tint); display: flex; align-items: center; justify-content: center; }
+.infra h4 { font-size: 20px; font-weight: 900; color: var(--navy); }
+.infra p { font-size: 15.5px; color: var(--ink2); margin-top: 6px; line-height: 1.6; }
+.infra .hl { color: var(--gold); font-weight: 700; }
+
+/* product */
+.feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+.f { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.f .v { font-size: 34px; font-weight: 900; color: var(--navy); }
+.f .v small { font-size: 18px; }
+.f h4 { font-size: 18px; font-weight: 900; margin-top: 4px; color: var(--ink); }
+.f p { font-size: 15px; color: var(--ink2); margin-top: 8px; line-height: 1.55; }
+.comm { margin-top: 20px; background: var(--navy); border-radius: 16px; padding: 22px 28px; color: #fff; display: flex; align-items: center; gap: 26px; }
+.comm h4 { font-size: 18px; color: var(--gold-lt); flex: none; }
+.comm .items { display: flex; gap: 10px; flex-wrap: wrap; }
+.comm .items span { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 7px 16px; font-size: 16px; font-weight: 700; }
+
+/* future timeline */
+.tl { position: relative; margin-top: 20px; height: 168px; }
+.tl .axis { position: absolute; left: 0; right: 0; top: 70px; height: 4px; background: linear-gradient(90deg, var(--navy), var(--blue)); border-radius: 2px; }
+.tl .ev { position: absolute; top: 0; width: 220px; transform: translateX(-50%); text-align: center; }
+.tl .ev .d { font-size: 16px; font-weight: 900; color: var(--gold); height: 44px; display: flex; align-items: flex-end; justify-content: center; }
+.tl .ev .pt { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 5px solid var(--navy); margin: 8px auto 0; }
+.tl .ev.star .pt { background: var(--gold); border-color: var(--gold); width: 26px; height: 26px; margin-top: 6px; }
+.tl .ev h5 { font-size: 17px; font-weight: 900; color: var(--navy); margin-top: 14px; }
+.tl .ev p { font-size: 14px; color: var(--ink2); margin-top: 4px; line-height: 1.45; }
+.fut { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-top: 8px; }
+
+/* summary */
+.sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+.s { border-radius: 16px; padding: 26px; background: var(--tint); }
+.s .n { font-size: 44px; font-weight: 900; color: var(--gold); line-height: 1; }
+.s h4 { font-size: 21px; font-weight: 900; color: var(--navy); margin-top: 12px; }
+.s p { font-size: 15.5px; color: var(--ink2); margin-top: 8px; line-height: 1.6; }
+.disc { margin-top: 26px; font-size: 12.5px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 14px; }
+</style>
+</head>
+<body>
+
+<!-- 1. COVER -->
+<section class="slide cover">
+  <svg class="sky" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="rgba(255,255,255,0.06)">
+      <rect x="820" y="250" width="70" height="470" rx="4"/><rect x="900" y="200" width="80" height="520" rx="4"/>
+      <rect x="990" y="280" width="64" height="440" rx="4"/><rect x="1064" y="170" width="84" height="550" rx="4"/>
+      <rect x="1158" y="310" width="70" height="410" rx="4"/>
+    </g>
+    <g fill="rgba(233,199,123,0.35)">
+      <rect x="918" y="230" width="10" height="8"/><rect x="940" y="260" width="10" height="8"/><rect x="1084" y="210" width="10" height="8"/>
+      <rect x="1110" y="250" width="10" height="8"/><rect x="1090" y="300" width="10" height="8"/><rect x="838" y="290" width="10" height="8"/>
+    </g>
+    <path d="M0 640 C 300 600, 600 690, 1280 620 L1280 720 L0 720 Z" fill="rgba(255,255,255,0.05)"/>
+  </svg>
+  <div class="inner">
+    <span class="tag">고객 브리핑 자료 · 2026</span>
+    <h1>힐스테이트<br><span>양산더스카이</span></h1>
+    <p class="sub">경남 양산시 물금읍 · 현대건설 · 물금 일대 10년 만의 신축 아파트</p>
+    <div class="chips">
+      <div class="chip"><b class="num">598<small style="font-size:16px"> 가구</small></b><small>1·2단지 총 규모</small></div>
+      <div class="chip"><b class="num">5%</b><small>계약금 (1차 500만원 정액)</small></div>
+      <div class="chip"><b>전매제한 없음</b><small>비규제지역</small></div>
+      <div class="chip"><b class="num">2029.04</b><small>입주 예정</small></div>
+    </div>
+  </div>
+  <div class="bottom">본 자료는 공개 보도자료를 바탕으로 작성된 상담용 요약본이며, 최종 내용은 입주자모집공고를 기준으로 합니다.</div>
+</section>
+
+<!-- 2. OVERVIEW -->
+<section class="slide">
+  <div class="eyebrow">01 · 사업 개요</div>
+  <h2>한눈에 보는 힐스테이트 양산더스카이</h2>
+  <p class="lead">양산에 처음 들어서는 '힐스테이트' 브랜드 단지로, 1·2단지 합계 598가구 규모입니다.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="v num">598<small>가구</small></div><div class="k">2개 단지 · 단지별 299가구</div></div>
+    <div class="kpi"><div class="v num">8<small>개 동</small></div><div class="k">단지별 4개 동</div></div>
+    <div class="kpi"><div class="v num">20<small>층</small></div><div class="k">지하 3~4층 / 지상 최고 20층</div></div>
+    <div class="kpi"><div class="v num">약 88<small>%</small></div><div class="k">전용 84㎡ 비중</div></div>
+  </div>
+  <table class="spec">
+    <tr><th>단지명</th><td>힐스테이트 양산더스카이 (1단지 · 2단지)</td></tr>
+    <tr><th>위치</th><td>경상남도 양산시 물금읍 가촌리 971번지 (1단지) · 범어리 940-2번지 (2단지) 일원</td></tr>
+    <tr><th>시공</th><td>현대건설</td></tr>
+    <tr><th>주택형 (전용)</th><td>68㎡ · 84㎡ · 159㎡</td></tr>
+    <tr><th>입주 예정</th><td>2029년 4월</td></tr>
+  </table>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>2</span></div>
+</section>
+
+<!-- 3. COMPLEX COMPARE -->
+<section class="slide">
+  <div class="eyebrow">02 · 단지 구성</div>
+  <h2>1단지 · 2단지 비교</h2>
+  <div class="two">
+    <div class="card">
+      <h3><span class="dot" style="background:var(--blue)"></span>1단지</h3>
+      <div class="addr">양산시 물금읍 가촌리 971번지 일원</div>
+      <dl>
+        <dt>규모</dt><dd>지하 4층 ~ 지상 20층, 4개 동</dd>
+        <dt>세대수</dt><dd class="num">299가구</dd>
+        <dt>주택형</dt><dd><div class="types"><span class="pill">68㎡</span><span class="pill hl">84㎡</span><span class="pill">159㎡</span></div></dd>
+        <dt>특징</dt><dd>소형 68㎡ 포함 · 선택 폭이 넓음</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3><span class="dot" style="background:var(--gold)"></span>2단지</h3>
+      <div class="addr">양산시 물금읍 범어리 940-2번지 일원</div>
+      <dl>
+        <dt>규모</dt><dd>지하 3층 ~ 지상 20층, 4개 동</dd>
+        <dt>세대수</dt><dd class="num">299가구</dd>
+        <dt>주택형</dt><dd><div class="types"><span class="pill hl">84㎡</span><span class="pill">159㎡</span></div></dd>
+        <dt>특징</dt><dd>84㎡ 중심 구성 · 대형 159㎡ 포함</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="banner">
+    <svg width="96" height="96" viewBox="0 0 36 36" aria-label="전용 84㎡ 약 88%">
+      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4.5"/>
+      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e9c77b" stroke-width="4.5" stroke-dasharray="88 12" stroke-dashoffset="25" stroke-linecap="butt"/>
+    </svg>
+    <div class="big num">약 88%</div>
+    <p>전체 가구의 약 88%를 <b>실수요 선호도가 가장 높은 전용 84㎡</b>로 구성했습니다.<br>
+      펜트하우스(2가구)를 제외한 전 가구가 <b>판상형 4Bay</b> 구조입니다.</p>
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>3</span></div>
+</section>
+
+<!-- 4. PRICE -->
+<section class="slide">
+  <div class="eyebrow">03 · 분양가</div>
+  <h2>주택형별 분양가 (최고가 기준)</h2>
+  <p class="lead">국민평형 전용 84㎡가 <b>5억원 초반대</b>로 책정되었습니다.</p>
+  <div class="chart-wrap">
+    <div>
+      <div class="legend"><span><i style="background:#2466a8"></i>1단지</span><span><i style="background:#b07a1c"></i>2단지</span><span style="margin-left:auto;color:var(--muted)">단위: 만원</span></div>
+      <svg width="640" height="380" viewBox="0 0 640 380" role="img" aria-label="주택형별 최고 분양가 막대 차트">
+        <g font-family="NSKR" font-size="15">
+          <!-- grid: scale 0~120,000만원 → 0~440px, x0 = 130 -->
+          <g stroke="#e3e6eb" stroke-width="1">
+            <line x1="130" y1="10" x2="130" y2="340"/>
+            <line x1="240" y1="10" x2="240" y2="340"/>
+            <line x1="350" y1="10" x2="350" y2="340"/>
+            <line x1="460" y1="10" x2="460" y2="340"/>
+            <line x1="570" y1="10" x2="570" y2="340"/>
+          </g>
+          <g fill="#8a93a3" font-size="13" text-anchor="middle">
+            <text x="130" y="362">0</text><text x="240" y="362">3억</text><text x="350" y="362">6억</text><text x="460" y="362">9억</text><text x="570" y="362">12억</text>
+          </g>
+          <!-- rows -->
+          <g fill="#4a5566" text-anchor="end" font-weight="700">
+            <text x="118" y="46">68㎡</text>
+            <text x="118" y="124">84㎡</text>
+            <text x="118" y="244">159㎡</text>
+          </g>
+          <!-- 1단지 68: 44670 → 163.8 -->
+          <rect x="130" y="28" width="163.8" height="28" rx="4" fill="#2466a8"/>
+          <text x="301" y="48" fill="#1b2330" font-weight="700" class="num">4억 4,670</text>
+          <!-- 84: 52950 → 194.2 ; 52720 → 193.3 -->
+          <rect x="130" y="96" width="194.2" height="28" rx="4" fill="#2466a8"/>
+          <text x="332" y="116" fill="#1b2330" font-weight="700">5억 2,950</text>
+          <rect x="130" y="128" width="193.3" height="28" rx="4" fill="#b07a1c"/>
+          <text x="331" y="148" fill="#1b2330" font-weight="700">5억 2,720</text>
+          <!-- 159: 113300 → 415.4 ; 109800 → 402.6 -->
+          <rect x="130" y="216" width="415.4" height="28" rx="4" fill="#2466a8"/>
+          <text x="553" y="236" fill="#1b2330" font-weight="700">11억 3,300</text>
+          <rect x="130" y="248" width="402.6" height="28" rx="4" fill="#b07a1c"/>
+          <text x="540" y="268" fill="#1b2330" font-weight="700">10억 9,800</text>
+          <text x="140" y="302" fill="#8a93a3" font-size="13">※ 68㎡는 1단지에만 공급</text>
+        </g>
+      </svg>
+    </div>
+    <div class="side">
+      <div class="box"><h4>84㎡ · 1단지</h4><div class="v num">5억 2,950만원</div><p>최고가 기준</p></div>
+      <div class="box"><h4>84㎡ · 2단지</h4><div class="v num">5억 2,720만원</div><p>최고가 기준</p></div>
+      <div class="box"><h4>68㎡ · 1단지</h4><div class="v num">4억 4,670만원</div><p>1단지 한정 · 최고가 기준</p></div>
+    </div>
+  </div>
+  <p class="note">※ 층·향·동에 따라 분양가가 다르며, 표시 금액은 주택형별 최고가입니다. 발코니 확장 및 옵션 비용은 별도입니다.</p>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>4</span></div>
+</section>
+
+<!-- 5. PAYMENT -->
+<section class="slide">
+  <div class="eyebrow">04 · 계약 조건</div>
+  <h2>초기 자금 부담을 낮춘 계약 조건</h2>
+  <p class="lead">계약금 5%로 입주 시까지 추가 부담을 줄이고, 비규제지역으로 전매제한이 없습니다.</p>
+  <div class="steps">
+    <div class="step"><div class="circle">1</div><h4>계약금 5%</h4><p>1차 계약금 <b>500만원 정액제</b><br>잔여 계약금은 2차 납부</p></div>
+    <div class="step"><div class="circle">2</div><h4>중도금 무이자</h4><p>중도금 이자 부담 없음<br>입주 시까지 계약금 5%로 끝</p></div>
+    <div class="step gold"><div class="circle">3</div><h4>잔금 · 입주</h4><p>2029년 4월 입주 예정<br>입주 시 잔금 납부</p></div>
+  </div>
+  <div class="calc">
+    <div class="box">
+      <h4>예시 · 전용 84㎡ 1단지 (최고가 5억 2,950만원)</h4>
+      <div class="row"><span>계약금 5%</span><b class="num">2,647만 5천원</b></div>
+      <div class="row"><span>└ 1차 계약금 (정액)</span><b class="num">500만원</b></div>
+      <div class="row"><span>└ 잔여 계약금</span><b class="num">2,147만 5천원</b></div>
+      <div class="row"><span>중도금 이자</span><b>무이자</b></div>
+    </div>
+    <div class="badge3">
+      <div class="badge"><div class="ic">5%</div><div><b>계약금 5%</b><span>1차 500만원 정액 · 초기 목돈 부담 최소화</span></div></div>
+      <div class="badge"><div class="ic">0</div><div><b>중도금 무이자</b><span>입주 전까지 이자 부담 없음</span></div></div>
+      <div class="badge"><div class="ic">✓</div><div><b>전매제한 없음</b><span>양산시 비규제지역</span></div></div>
+    </div>
+  </div>
+  <p class="note">※ 예시는 최고가 기준 단순 계산이며, 실제 납부 일정·금액은 공급계약서 및 입주자모집공고를 따릅니다.</p>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>5</span></div>
+</section>
+
+<!-- 6. LOCATION -->
+<section class="slide">
+  <div class="eyebrow">05 · 교통</div>
+  <h2>부산·김해를 잇는 광역 교통망</h2>
+  <div class="loc">
+    <div class="diagram">
+      <svg width="100%" height="100%" viewBox="0 0 640 470" role="img" aria-label="단지 중심 교통망 개념도">
+        <g font-family="NSKR">
+          <text x="20" y="30" fill="#8a93a3" font-size="13">개념도 (실제 거리·축척과 다름)</text>
+          <!-- links -->
+          <g stroke="#b7c0cd" stroke-width="2" stroke-dasharray="6 6">
+            <line x1="320" y1="240" x2="130" y2="110"/>
+            <line x1="320" y1="240" x2="520" y2="110"/>
+            <line x1="320" y1="240" x2="120" y2="380"/>
+            <line x1="320" y1="240" x2="530" y2="380"/>
+          </g>
+          <!-- center -->
+          <circle cx="320" cy="240" r="72" fill="#0f2a44"/>
+          <circle cx="320" cy="240" r="84" fill="none" stroke="#b07a1c" stroke-width="2"/>
+          <text x="320" y="232" fill="#e9c77b" font-size="15" font-weight="700" text-anchor="middle">힐스테이트</text>
+          <text x="320" y="256" fill="#fff" font-size="17" font-weight="900" text-anchor="middle">양산더스카이</text>
+          <!-- nodes -->
+          <g font-size="16" font-weight="900" text-anchor="middle">
+            <rect x="40" y="70" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
+            <text x="130" y="100" fill="#0f2a44">KTX 물금역</text>
+            <text x="130" y="124" fill="#4a5566" font-size="13" font-weight="400">고속철도 이용</text>
+
+            <rect x="430" y="70" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
+            <text x="520" y="100" fill="#0f2a44">부산 2호선 증산역</text>
+            <text x="520" y="124" fill="#4a5566" font-size="13" font-weight="400">부산 도심 연결</text>
+
+            <rect x="30" y="345" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
+            <text x="120" y="375" fill="#0f2a44">물금IC · 남양산IC</text>
+            <text x="120" y="399" fill="#4a5566" font-size="13" font-weight="400">부산·김해 차량 이동</text>
+
+            <rect x="440" y="345" width="180" height="70" rx="12" fill="#fff" stroke="#b07a1c" stroke-width="2"/>
+            <text x="530" y="375" fill="#0f2a44">도시철도 양산선</text>
+            <text x="530" y="399" fill="#b07a1c" font-size="13" font-weight="700">2026.12 개통 목표</text>
+          </g>
+          <text x="320" y="355" fill="#4a5566" font-size="14" text-anchor="middle">황산로 · 부산대학로</text>
+          <text x="320" y="374" fill="#8a93a3" font-size="13" text-anchor="middle">양산 시내 이동</text>
+        </g>
+      </svg>
+    </div>
+    <div class="list">
+      <div class="li"><span class="t">철도</span><div><b>KTX 물금역</b><span>고속철도 이용 편리 · 11월 착공 사업 예정(보도 기준)</span></div></div>
+      <div class="li"><span class="t">지하철</span><div><b>부산도시철도 2호선 증산역</b><span>부산 도심 접근</span></div></div>
+      <div class="li"><span class="t g">개통 예정</span><div><b>도시철도 양산선 (노포 ~ 북정)</b><span>총연장 11.43㎞ · 7개 정거장 · 2026년 12월 개통 목표, 시험운행 중</span></div></div>
+      <div class="li"><span class="t g">계획</span><div><b>부산·울산·양산 광역철도</b><span>KTX 울산역 ~ 양산 웅상 ~ 부산 노포역 · 47.6㎞ 11개 정거장 · 2031년 개통 목표</span></div></div>
+      <div class="li"><span class="t">도로</span><div><b>물금IC · 남양산IC</b><span>부산·김해 방면 차량 접근</span></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>6</span></div>
+</section>
+
+<!-- 7. INFRA -->
+<section class="slide">
+  <div class="eyebrow">06 · 교육 · 생활 인프라</div>
+  <h2>이미 완성된 물금 생활권</h2>
+  <div class="grid4">
+    <div class="infra">
+      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></div>
+      <div><h4>교육</h4><p><span class="hl">서남초등학교</span>를 비롯해 물금초 · 물금중 · 물금고 · 범어고 등 초·중·고 인접</p></div>
+    </div>
+    <div class="infra">
+      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6"/></svg></div>
+      <div><h4>의료</h4><p><span class="hl">양산부산대학교병원</span>(1,200여 병상) 인접 — 대형 종합병원 이용 편리</p></div>
+    </div>
+    <div class="infra">
+      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7a3 3 0 016 0"/></svg></div>
+      <div><h4>쇼핑 · 문화</h4><p>이마트 양산점 · 하나로마트 양산점 · 롯데시네마 양산물금점 · 메가박스 양산/양산증산점 · 나래메트로시티 · 양산시외버스터미널</p></div>
+    </div>
+    <div class="infra">
+      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M12 3l6 9H6z"/><path d="M12 9l7 10H5z"/><path d="M12 19v3"/></svg></div>
+      <div><h4>공원 · 녹지</h4><p><span class="hl">양산디자인공원(약 18만㎡)</span> · 오봉산 · 서남체육공원 — 산책로, 유아숲, 자전거도로, 전망대 등</p></div>
+    </div>
+    <div class="infra" style="grid-column: span 2;">
+      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg></div>
+      <div><h4>스포츠</h4><p>단지 <span class="hl">바로 옆 양산중앙국민체육센터</span> — 수영장 · 헬스장 · 실내골프연습장 · 볼링장</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>7</span></div>
+</section>
+
+<!-- 8. PRODUCT -->
+<section class="slide">
+  <div class="eyebrow">07 · 상품 설계</div>
+  <h2>힐스테이트가 만드는 새 기준의 주거</h2>
+  <div class="feat">
+    <div class="f"><div class="v">4Bay</div><h4>판상형 4Bay 설계</h4><p>펜트하우스(2가구) 제외 전 가구 적용 · 채광과 통풍 우수</p></div>
+    <div class="f"><div class="v num">2.4<small>m</small></div><h4>높은 천장고</h4><p>기본 2.4m, 우물천장 포함 2.5m로 실내 개방감 강화</p></div>
+    <div class="f"><div class="v">유리난간</div><h4>탁 트인 거실</h4><p>안방 제외 거실에 철제 대신 유리난간 적용 · 세련된 외관</p></div>
+    <div class="f"><div class="v">H 사일런트</div><h4>층간소음 저감</h4><p>현대건설 특허 'H 사일런트 홈 시스템' 전 가구 적용 (팬트리·드레스룸 등 일부 공간 제외)</p></div>
+    <div class="f"><div class="v">수납 특화</div><h4>드레스룸 · 팬트리</h4><p>드레스룸과 팬트리(알파룸)로 수납공간 극대화</p></div>
+    <div class="f"><div class="v">브랜드</div><h4>양산 첫 힐스테이트</h4><p>현대건설 프리미엄 브랜드의 양산 첫 단지</p></div>
+  </div>
+  <div class="comm">
+    <h4>커뮤니티</h4>
+    <div class="items"><span>실내 골프연습장</span><span>피트니스</span><span>힐스 라운지</span><span>스터디 라운지</span><span>H아이숲 (실내 놀이공간)</span></div>
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>8</span></div>
+</section>
+
+<!-- 9. FUTURE -->
+<section class="slide">
+  <div class="eyebrow">08 · 미래가치</div>
+  <h2>공급 희소성 + 개발 호재</h2>
+  <p class="lead">약 10년 만의 신규 공급과 광역 교통망 확충이 함께 진행되고 있습니다.</p>
+  <div class="tl">
+    <div class="axis"></div>
+    <div class="ev" style="left:8%"><div class="d">2015 ~</div><div class="pt"></div><h5>신규 공급 공백</h5><p>가촌리 일대 약 10년간<br>신규 아파트 공급 없음</p></div>
+    <div class="ev" style="left:30%"><div class="d">2026.11</div><div class="pt"></div><h5>KTX 물금역 착공 예정</h5><p>보도 기준</p></div>
+    <div class="ev" style="left:51%"><div class="d">2026.12</div><div class="pt"></div><h5>양산선 개통 목표</h5><p>노포 ~ 북정 · 7개역</p></div>
+    <div class="ev star" style="left:72%"><div class="d">2029.04</div><div class="pt"></div><h5>입주 예정</h5><p>힐스테이트 양산더스카이</p></div>
+    <div class="ev" style="left:92%"><div class="d">2031</div><div class="pt"></div><h5>부울 광역철도</h5><p>개통 목표 · 47.6㎞</p></div>
+  </div>
+  <div class="fut">
+    <div class="box">
+      <h4>인근 시세 흐름 (실거래)</h4>
+      <svg width="330" height="150" viewBox="0 0 330 150" role="img" aria-label="양산대방노블랜드8차로얄카운티 84㎡ 실거래가 비교">
+        <g font-family="NSKR">
+          <!-- scale: 0~7억 → 0~120px baseline y=120 -->
+          <line x1="10" y1="120" x2="320" y2="120" stroke="#cfd5de"/>
+          <rect x="40" y="37.2" width="70" height="82.8" rx="4" fill="#8aa6c4"/>
+          <text x="75" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#1b2330">4.83억</text>
+          <text x="75" y="140" text-anchor="middle" font-size="12" fill="#4a5566">2026.02</text>
+          <rect x="140" y="23.3" width="70" height="96.7" rx="4" fill="#2466a8"/>
+          <text x="175" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1b2330">5.64억</text>
+          <text x="175" y="140" text-anchor="middle" font-size="12" fill="#4a5566">2026.08</text>
+          <text x="258" y="60" text-anchor="middle" font-size="22" font-weight="900" fill="#b07a1c">+약 8천만</text>
+          <text x="258" y="82" text-anchor="middle" font-size="12" fill="#4a5566">6개월</text>
+        </g>
+      </svg>
+      <p style="font-size:13px">양산대방노블랜드8차로얄카운티 84㎡ 18층 · 2026.08 <b>5.64억</b></p>
+    </div>
+    <div class="box"><h4>국가 계획</h4><p>국정운영 5개년 계획안에 <b>양산시 일대 UN 국제물류센터 유치</b> 포함</p></div>
+    <div class="box"><h4>의료·바이오</h4><p>양산부산대병원 중심 <b>동남권 의료 클러스터 · 바이오 랩 허브</b> 사업 국비 5억원 확보</p></div>
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>9</span></div>
+</section>
+
+<!-- 10. SUMMARY -->
+<section class="slide">
+  <div class="eyebrow">09 · 핵심 요약</div>
+  <h2>힐스테이트 양산더스카이를 선택해야 하는 이유</h2>
+  <div class="sum">
+    <div class="s"><div class="n">01</div><h4>10년 만의 신축</h4><p>물금 가촌리 일대 약 10년 만의 신규 아파트 · 양산 첫 힐스테이트 브랜드</p></div>
+    <div class="s"><div class="n">02</div><h4>교통 호재 집중</h4><p>양산선 2026.12 개통 목표 · KTX 물금역 · 부산 2호선 증산역 · 부울 광역철도 계획</p></div>
+    <div class="s"><div class="n">03</div><h4>합리적인 가격</h4><p>84㎡ 5억원 초반대(최고가 기준) · 계약금 5% · 중도금 무이자</p></div>
+    <div class="s"><div class="n">04</div><h4>규제 부담 없음</h4><p>비규제지역 · 전매제한 없음</p></div>
+    <div class="s"><div class="n">05</div><h4>완성된 생활권</h4><p>양산부산대병원 · 이마트 · 초중고 · 양산디자인공원 · 체육센터 인접</p></div>
+    <div class="s"><div class="n">06</div><h4>상품 경쟁력</h4><p>4Bay 판상형 · 천장고 2.4m · 유리난간 · H 사일런트 층간소음 저감</p></div>
+  </div>
+  <div class="disc">
+    ※ 본 자료는 2026년 6~8월 언론 보도(한국경제, 서울경제, 이데일리, 뉴시스, 아시아경제, 경남도민일보 등) 및 현대건설 힐스테이트 분양 페이지 공개 정보를 바탕으로 작성한 상담 참고용 자료입니다.<br>
+    ※ 분양가·계약조건·입주시기·개발계획은 변경될 수 있으며, 최종 내용은 반드시 입주자모집공고 및 공급계약서를 확인하시기 바랍니다. 개발 호재는 계획·보도 기준으로 실현 여부나 시기가 달라질 수 있습니다.
+  </div>
+  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>10</span></div>
+</section>
+
+</body>
+</html>
