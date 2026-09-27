@@ -8,469 +8,510 @@
 @font-face { font-family: 'NSKR'; font-weight: 700; src: url('FONT_DIR/b.ttf'); }
 @font-face { font-family: 'NSKR'; font-weight: 900; src: url('FONT_DIR/k.ttf'); }
 :root {
-  --navy: #0f2a44; --navy2: #17395c; --blue: #2466a8; --gold: #b07a1c; --gold-lt: #e9c77b;
-  --ink: #1b2330; --ink2: #4a5566; --muted: #8a93a3; --line: #e3e6eb; --bg: #fcfcfb; --tint: #f3f5f8;
+  --navy: #0f2a44; --blue: #2466a8; --sky: #8fb3d9; --gold: #b07a1c; --gold-lt: #e9c77b;
+  --ink: #1b2330; --ink2: #4a5566; --muted: #8a93a3; --line: #e3e6eb; --bg: #fcfcfb; --tint: #f1f4f8;
 }
 @page { size: 1280px 720px; margin: 0; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { word-break: keep-all; background: var(--bg); color: var(--ink); font-family: 'NSKR', 'Noto Sans KR', 'Malgun Gothic', sans-serif; }
-.slide { width: 1280px; height: 720px; position: relative; overflow: hidden; page-break-after: always; background: var(--bg); padding: 56px 72px 48px; }
+svg text { font-family: inherit; }
+.slide { width: 1280px; height: 720px; position: relative; overflow: hidden; page-break-after: always; background: var(--bg); }
 .slide:last-child { page-break-after: auto; }
-.eyebrow { font-size: 15px; font-weight: 700; letter-spacing: .12em; color: var(--gold); margin-bottom: 10px; }
-h2 { font-size: 38px; font-weight: 900; letter-spacing: -0.02em; color: var(--navy); line-height: 1.2; }
-.lead { font-size: 18px; color: var(--ink2); margin-top: 10px; line-height: 1.55; }
-.foot { position: absolute; left: 72px; right: 72px; bottom: 22px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
-.num { font-variant-numeric: tabular-nums; }
-
-/* cover */
-.cover { background: linear-gradient(135deg, #0b2036 0%, #143a60 60%, #1d4c78 100%); color: #fff; padding: 0; }
-.cover .sky { position: absolute; inset: 0; }
-.cover .inner { position: absolute; left: 88px; top: 150px; right: 88px; }
-.cover .tag { display: inline-block; font-size: 16px; font-weight: 700; color: var(--gold-lt); border: 1px solid rgba(233,199,123,.6); padding: 6px 16px; border-radius: 999px; letter-spacing: .08em; }
-.cover h1 { font-size: 76px; font-weight: 900; letter-spacing: -0.03em; margin-top: 26px; line-height: 1.1; }
-.cover h1 span { color: var(--gold-lt); }
-.cover .sub { font-size: 22px; margin-top: 20px; color: rgba(255,255,255,.85); }
-.cover .chips { display: flex; gap: 14px; margin-top: 48px; }
-.cover .chip { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 14px 22px; }
-.cover .chip b { display: block; font-size: 28px; font-weight: 900; }
-.cover .chip small { font-size: 14px; color: rgba(255,255,255,.72); }
-.cover .bottom { position: absolute; left: 88px; bottom: 40px; font-size: 13px; color: rgba(255,255,255,.6); }
-
-/* KPI tiles */
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 34px; }
-.kpi { background: var(--tint); border-radius: 14px; padding: 22px 24px; border-top: 4px solid var(--navy); }
-.kpi .v { font-size: 40px; font-weight: 900; color: var(--navy); line-height: 1.1; }
-.kpi .v small { font-size: 20px; font-weight: 700; margin-left: 2px; }
-.kpi .k { font-size: 15px; color: var(--ink2); margin-top: 6px; }
-table.spec { width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 17px; }
-table.spec th { text-align: left; width: 190px; color: var(--ink2); font-weight: 700; padding: 13px 16px; background: var(--tint); border-bottom: 1px solid #fff; }
-table.spec td { padding: 13px 18px; border-bottom: 1px solid var(--line); }
-
-/* complex compare */
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 30px; }
-.card { border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; background: #fff; }
-.card h3 { font-size: 24px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 10px; }
-.card h3 .dot { width: 14px; height: 14px; border-radius: 4px; }
-.card .addr { font-size: 15px; color: var(--ink2); margin-top: 6px; }
-.card dl { display: grid; grid-template-columns: 110px 1fr; row-gap: 12px; margin-top: 20px; font-size: 17px; }
-.card dt { color: var(--muted); }
-.card dd { font-weight: 700; }
-.types { display: flex; gap: 8px; flex-wrap: wrap; }
-.pill { font-size: 15px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--tint); color: var(--navy); }
-.pill.hl { background: var(--navy); color: #fff; }
-.banner { margin-top: 26px; display: flex; align-items: center; gap: 28px; background: var(--navy); color: #fff; border-radius: 16px; padding: 22px 30px; }
-.banner .big { font-size: 46px; font-weight: 900; color: var(--gold-lt); }
-.banner p { font-size: 18px; line-height: 1.5; }
-
-/* price chart */
-.chart-wrap { display: grid; grid-template-columns: 1.45fr 1fr; gap: 36px; margin-top: 26px; }
-.legend { display: flex; gap: 20px; font-size: 14px; color: var(--ink2); margin-bottom: 10px; }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-.side { display: flex; flex-direction: column; gap: 14px; }
-.box { background: var(--tint); border-radius: 14px; padding: 20px 22px; }
-.box h4 { font-size: 16px; color: var(--gold); font-weight: 900; margin-bottom: 6px; }
-.box .v { font-size: 30px; font-weight: 900; color: var(--navy); }
-.box p { font-size: 15px; color: var(--ink2); line-height: 1.5; }
-.note { font-size: 13px; color: var(--muted); margin-top: 10px; }
-
-/* timeline for payment */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 24px; position: relative; }
-.step { padding: 0 18px; position: relative; }
-.step .circle { width: 64px; height: 64px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-.step.gold .circle { background: var(--gold); }
-.steps::before { content: ''; position: absolute; left: 50px; right: 50px; top: 31px; height: 2px; background: var(--line); }
-.step h4 { font-size: 22px; font-weight: 900; color: var(--navy); margin-top: 14px; }
-.step p { font-size: 16px; color: var(--ink2); margin-top: 6px; line-height: 1.55; }
-.calc { margin-top: 22px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
-.calc .box .row { display: flex; justify-content: space-between; font-size: 16px; padding: 6px 0; border-bottom: 1px dashed #d5dae2; }
-.calc .box .row:last-child { border-bottom: 0; }
-.calc .box .row b { color: var(--navy); }
-.badge3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
-.badge { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 11px 18px; }
-.badge .ic { width: 44px; height: 44px; font-size: 15px !important; border-radius: 10px; background: var(--navy); color: var(--gold-lt); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; flex: none; }
-.badge b { font-size: 18px; color: var(--navy); }
-.badge span { display: block; font-size: 14px; color: var(--ink2); }
-
-/* location diagram */
-.loc { display: grid; grid-template-columns: 1.25fr 1fr; gap: 30px; margin-top: 22px; }
-.diagram { background: var(--tint); border-radius: 16px; height: 470px; position: relative; }
-.list { display: flex; flex-direction: column; gap: 12px; }
-.li { display: flex; gap: 14px; align-items: flex-start; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
-.li .t { flex: none; width: 92px; font-size: 13px; font-weight: 700; color: #fff; background: var(--navy); border-radius: 6px; padding: 4px 0; text-align: center; margin-top: 2px; }
-.li .t.g { background: var(--gold); }
-.li div b { font-size: 17px; color: var(--ink); }
-.li div span { display: block; font-size: 14px; color: var(--ink2); margin-top: 2px; }
-
-/* infra grid */
-.grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 26px; }
-.infra { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 26px; display: flex; gap: 20px; }
-.infra .icon { flex: none; width: 56px; height: 56px; border-radius: 14px; background: var(--tint); display: flex; align-items: center; justify-content: center; }
-.infra h4 { font-size: 20px; font-weight: 900; color: var(--navy); }
-.infra p { font-size: 15.5px; color: var(--ink2); margin-top: 6px; line-height: 1.6; }
-.infra .hl { color: var(--gold); font-weight: 700; }
-
-/* product */
-.feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
-.f { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
-.f .v { font-size: 34px; font-weight: 900; color: var(--navy); }
-.f .v small { font-size: 18px; }
-.f h4 { font-size: 18px; font-weight: 900; margin-top: 4px; color: var(--ink); }
-.f p { font-size: 15px; color: var(--ink2); margin-top: 8px; line-height: 1.55; }
-.comm { margin-top: 20px; background: var(--navy); border-radius: 16px; padding: 22px 28px; color: #fff; display: flex; align-items: center; gap: 26px; }
-.comm h4 { font-size: 18px; color: var(--gold-lt); flex: none; }
-.comm .items { display: flex; gap: 10px; flex-wrap: wrap; }
-.comm .items span { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 7px 16px; font-size: 16px; font-weight: 700; }
-
-/* future timeline */
-.tl { position: relative; margin-top: 20px; height: 168px; }
-.tl .axis { position: absolute; left: 0; right: 0; top: 70px; height: 4px; background: linear-gradient(90deg, var(--navy), var(--blue)); border-radius: 2px; }
-.tl .ev { position: absolute; top: 0; width: 220px; transform: translateX(-50%); text-align: center; }
-.tl .ev .d { font-size: 16px; font-weight: 900; color: var(--gold); height: 44px; display: flex; align-items: flex-end; justify-content: center; }
-.tl .ev .pt { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 5px solid var(--navy); margin: 8px auto 0; }
-.tl .ev.star .pt { background: var(--gold); border-color: var(--gold); width: 26px; height: 26px; margin-top: 6px; }
-.tl .ev h5 { font-size: 17px; font-weight: 900; color: var(--navy); margin-top: 14px; }
-.tl .ev p { font-size: 14px; color: var(--ink2); margin-top: 4px; line-height: 1.45; }
-.fut { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-top: 8px; }
-
-/* summary */
-.sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
-.s { border-radius: 16px; padding: 26px; background: var(--tint); }
-.s .n { font-size: 44px; font-weight: 900; color: var(--gold); line-height: 1; }
-.s h4 { font-size: 21px; font-weight: 900; color: var(--navy); margin-top: 12px; }
-.s p { font-size: 15.5px; color: var(--ink2); margin-top: 8px; line-height: 1.6; }
-.disc { margin-top: 26px; font-size: 12.5px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 14px; }
+.hd { position: absolute; left: 64px; top: 44px; }
+.eyebrow { font-size: 15px; font-weight: 700; letter-spacing: .12em; color: var(--gold); margin-bottom: 6px; }
+h2 { font-size: 36px; font-weight: 900; letter-spacing: -0.02em; color: var(--navy); line-height: 1.2; }
+.art { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 18px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
 </style>
 </head>
 <body>
 
-<!-- 1. COVER -->
-<section class="slide cover">
-  <svg class="sky" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
-    <g fill="rgba(255,255,255,0.06)">
-      <rect x="820" y="250" width="70" height="470" rx="4"/><rect x="900" y="200" width="80" height="520" rx="4"/>
-      <rect x="990" y="280" width="64" height="440" rx="4"/><rect x="1064" y="170" width="84" height="550" rx="4"/>
-      <rect x="1158" y="310" width="70" height="410" rx="4"/>
+<!-- 아이콘 모음 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-school" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 11v5c3 2.2 9 2.2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M21 9.5V15" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-hospital" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="9" cy="19" r="1.6" fill="currentColor"/><circle cx="17" cy="19" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 6l2 4M12 6l2 4M17 6l2 4" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 3l6 8h-3l4 6H5l4-6H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 17v4" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-swim" viewBox="0 0 24 24"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 21c2 0 2-1.5 4-1.5S8 21 10 21s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="6" r="2" fill="currentColor"/><path d="M5 13l5-5 3 3 3-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 10h14" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor"/><path d="M8 17l-2 4M16 17l2 4" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16v-4l2-5h12l2 5v4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8" cy="16.5" r="1.8" fill="currentColor"/><circle cx="16" cy="16.5" r="1.8" fill="currentColor"/><path d="M4 12h16" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12h9M18 12v3M21 12v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-won" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 8l2 8 3-6 3 6 2-8M6.5 11.5h11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V7a4 4 0 017.5-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-build" viewBox="0 0 24 24"><path d="M4 21V5l8-3v19M12 21V8l8 3v10M2 21h20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-golf" viewBox="0 0 24 24"><path d="M8 21V3l8 4-8 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="12" cy="21" rx="8" ry="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-gym" viewBox="0 0 24 24"><path d="M6 7v10M18 7v10M3 9.5v5M21 9.5v5M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M5 11V8a2 2 0 012-2h10a2 2 0 012 2v3M3 12a2 2 0 014 0v2h10v-2a2 2 0 014 0v5H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 17v2M19 17v2" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6zM12 6v14.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-kid" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v7M7 11l5-1 5 1M9 21l3-6 3 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z M3 7l9 4 9-4M12 11v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-dna" viewBox="0 0 24 24"><path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12M9 6h6M9 18h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-new" viewBox="0 0 24 24"><path d="M12 2l2.4 5.2L20 8l-4 4 1 5.6-5-2.8-5 2.8 1-5.6-4-4 5.6-.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <!-- 창문 패턴 -->
+    <pattern id="win" width="14" height="16" patternUnits="userSpaceOnUse"><rect x="3" y="4" width="8" height="7" rx="1" fill="rgba(255,255,255,.28)"/></pattern>
+    <pattern id="win-lit" width="14" height="16" patternUnits="userSpaceOnUse"><rect x="3" y="4" width="8" height="7" rx="1" fill="rgba(233,199,123,.35)"/></pattern>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#dde5ef"/><line x1="0" y1="0" x2="0" y2="8" stroke="#b9c7d8" stroke-width="3"/></pattern>
+    <linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b2036"/><stop offset=".65" stop-color="#1b4a76"/><stop offset="1" stop-color="#3d6f9e"/></linearGradient>
+    <linearGradient id="riverg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfe0f1"/><stop offset="1" stop-color="#b3cce6"/></linearGradient>
+  </defs>
+</svg>
+
+<!-- 1. 표지 -->
+<section class="slide">
+  <svg class="art" viewBox="0 0 1280 720">
+    <rect width="1280" height="720" fill="url(#skyg)"/>
+    <circle cx="1080" cy="140" r="46" fill="#e9c77b" opacity=".85"/>
+    <g fill="rgba(255,255,255,.06)"><circle cx="200" cy="120" r="1.5"/><circle cx="420" cy="80" r="1.2"/><circle cx="640" cy="150" r="1.4"/><circle cx="760" cy="60" r="1.2"/></g>
+    <!-- 산 -->
+    <path d="M0 520 L160 430 L300 490 L470 400 L640 480 L820 390 L1000 470 L1150 420 L1280 460 L1280 720 L0 720Z" fill="#0d2a47" opacity=".7"/>
+    <!-- 1단지 4개동 -->
+    <g transform="translate(-40,0)">
+      <rect x="640" y="250" width="74" height="330" rx="3" fill="#2466a8"/><rect x="640" y="250" width="74" height="330" fill="url(#win)"/>
+      <rect x="724" y="220" width="80" height="360" rx="3" fill="#2d74b8"/><rect x="724" y="220" width="80" height="360" fill="url(#win)"/>
+      <rect x="814" y="265" width="70" height="315" rx="3" fill="#2466a8"/><rect x="814" y="265" width="70" height="315" fill="url(#win)"/>
+      <rect x="894" y="235" width="78" height="345" rx="3" fill="#2d74b8"/><rect x="894" y="235" width="78" height="345" fill="url(#win)"/>
     </g>
-    <g fill="rgba(233,199,123,0.35)">
-      <rect x="918" y="230" width="10" height="8"/><rect x="940" y="260" width="10" height="8"/><rect x="1084" y="210" width="10" height="8"/>
-      <rect x="1110" y="250" width="10" height="8"/><rect x="1090" y="300" width="10" height="8"/><rect x="838" y="290" width="10" height="8"/>
+    <!-- 2단지 4개동 -->
+    <g transform="translate(-40,0)">
+      <rect x="1000" y="240" width="72" height="340" rx="3" fill="#b07a1c"/><rect x="1000" y="240" width="72" height="340" fill="url(#win)"/>
+      <rect x="1082" y="215" width="80" height="365" rx="3" fill="#c28a28"/><rect x="1082" y="215" width="80" height="365" fill="url(#win)"/>
+      <rect x="1172" y="255" width="70" height="325" rx="3" fill="#b07a1c"/><rect x="1172" y="255" width="70" height="325" fill="url(#win)"/>
+      <rect x="1252" y="230" width="66" height="350" rx="3" fill="#c28a28"/><rect x="1252" y="230" width="66" height="350" fill="url(#win)"/>
     </g>
-    <path d="M0 640 C 300 600, 600 690, 1280 620 L1280 720 L0 720 Z" fill="rgba(255,255,255,0.05)"/>
+    <rect x="600" y="580" width="720" height="10" fill="#0a1d31"/>
+    <text x="766" y="615" fill="rgba(255,255,255,.75)" font-size="16" font-weight="700" text-anchor="middle">1단지 · 4개동</text>
+    <text x="1116" y="615" fill="rgba(255,255,255,.75)" font-size="16" font-weight="700" text-anchor="middle">2단지 · 4개동</text>
+    <!-- 제목 -->
+    <rect x="80" y="130" width="190" height="36" rx="18" fill="none" stroke="rgba(233,199,123,.7)"/>
+    <text x="175" y="154" fill="#e9c77b" font-size="15" font-weight="700" text-anchor="middle" letter-spacing="1.5">고객 브리핑 자료</text>
+    <text x="80" y="250" fill="#fff" font-size="72" font-weight="900" letter-spacing="-2">힐스테이트</text>
+    <text x="80" y="335" fill="#e9c77b" font-size="72" font-weight="900" letter-spacing="-2">양산더스카이</text>
+    <text x="82" y="385" fill="rgba(255,255,255,.85)" font-size="20">경남 양산시 물금읍 · 현대건설</text>
+    <!-- 아이콘 칩 -->
+    <g font-weight="900" fill="#fff">
+      <g transform="translate(80,430)"><rect width="118" height="104" rx="14" fill="rgba(255,255,255,.1)"/><use href="#i-build" x="43" y="14" width="32" height="32" color="#e9c77b"/><text x="59" y="76" font-size="24" text-anchor="middle">598</text><text x="59" y="94" font-size="12" font-weight="400" fill="rgba(255,255,255,.7)" text-anchor="middle">가구</text></g>
+      <g transform="translate(210,430)"><rect width="118" height="104" rx="14" fill="rgba(255,255,255,.1)"/><use href="#i-won" x="43" y="14" width="32" height="32" color="#e9c77b"/><text x="59" y="76" font-size="24" text-anchor="middle">5%</text><text x="59" y="94" font-size="12" font-weight="400" fill="rgba(255,255,255,.7)" text-anchor="middle">계약금</text></g>
+      <g transform="translate(340,430)"><rect width="118" height="104" rx="14" fill="rgba(255,255,255,.1)"/><use href="#i-unlock" x="43" y="14" width="32" height="32" color="#e9c77b"/><text x="59" y="76" font-size="20" text-anchor="middle">전매자유</text><text x="59" y="94" font-size="12" font-weight="400" fill="rgba(255,255,255,.7)" text-anchor="middle">비규제지역</text></g>
+      <g transform="translate(470,430)"><rect width="118" height="104" rx="14" fill="rgba(255,255,255,.1)"/><use href="#i-cal" x="43" y="14" width="32" height="32" color="#e9c77b"/><text x="59" y="76" font-size="20" text-anchor="middle">2029.04</text><text x="59" y="94" font-size="12" font-weight="400" fill="rgba(255,255,255,.7)" text-anchor="middle">입주 예정</text></g>
+    </g>
+    <text x="80" y="690" fill="rgba(255,255,255,.5)" font-size="12">건물 그림은 이해를 돕기 위한 이미지이며 실제 조감도와 다릅니다. 최종 내용은 입주자모집공고를 기준으로 합니다.</text>
   </svg>
-  <div class="inner">
-    <span class="tag">고객 브리핑 자료 · 2026</span>
-    <h1>힐스테이트<br><span>양산더스카이</span></h1>
-    <p class="sub">경남 양산시 물금읍 · 현대건설 · 물금 일대 10년 만의 신축 아파트</p>
-    <div class="chips">
-      <div class="chip"><b class="num">598<small style="font-size:16px"> 가구</small></b><small>1·2단지 총 규모</small></div>
-      <div class="chip"><b class="num">5%</b><small>계약금 (1차 500만원 정액)</small></div>
-      <div class="chip"><b>전매제한 없음</b><small>비규제지역</small></div>
-      <div class="chip"><b class="num">2029.04</b><small>입주 예정</small></div>
-    </div>
-  </div>
-  <div class="bottom">본 자료는 공개 보도자료를 바탕으로 작성된 상담용 요약본이며, 최종 내용은 입주자모집공고를 기준으로 합니다.</div>
 </section>
 
-<!-- 2. OVERVIEW -->
+<!-- 2. 단지 규모 -->
 <section class="slide">
-  <div class="eyebrow">01 · 사업 개요</div>
-  <h2>한눈에 보는 힐스테이트 양산더스카이</h2>
-  <p class="lead">양산에 처음 들어서는 '힐스테이트' 브랜드 단지로, 1·2단지 합계 598가구 규모입니다.</p>
-  <div class="kpis">
-    <div class="kpi"><div class="v num">598<small>가구</small></div><div class="k">2개 단지 · 단지별 299가구</div></div>
-    <div class="kpi"><div class="v num">8<small>개 동</small></div><div class="k">단지별 4개 동</div></div>
-    <div class="kpi"><div class="v num">20<small>층</small></div><div class="k">지하 3~4층 / 지상 최고 20층</div></div>
-    <div class="kpi"><div class="v num">약 88<small>%</small></div><div class="k">전용 84㎡ 비중</div></div>
-  </div>
-  <table class="spec">
-    <tr><th>단지명</th><td>힐스테이트 양산더스카이 (1단지 · 2단지)</td></tr>
-    <tr><th>위치</th><td>경상남도 양산시 물금읍 가촌리 971번지 (1단지) · 범어리 940-2번지 (2단지) 일원</td></tr>
-    <tr><th>시공</th><td>현대건설</td></tr>
-    <tr><th>주택형 (전용)</th><td>68㎡ · 84㎡ · 159㎡</td></tr>
-    <tr><th>입주 예정</th><td>2029년 4월</td></tr>
-  </table>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>2</span></div>
+  <div class="hd"><div class="eyebrow">단지 규모</div><h2>2개 단지 · 8개 동 · 598가구</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 높이 눈금 -->
+    <line x1="150" y1="250" x2="150" y2="560" stroke="#8a93a3" stroke-width="1.5"/>
+    <path d="M143 258 L150 246 L157 258" fill="none" stroke="#8a93a3" stroke-width="1.5"/>
+    <text x="138" y="262" font-size="22" font-weight="900" fill="#0f2a44" text-anchor="end">20F</text>
+    <text x="138" y="286" font-size="13" fill="#4a5566" text-anchor="end">지상 최고</text>
+    <!-- 1단지 -->
+    <g>
+      <rect x="190" y="250" width="100" height="310" rx="4" fill="#2466a8"/><rect x="190" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="300" y="250" width="100" height="310" rx="4" fill="#2d74b8"/><rect x="300" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="410" y="250" width="100" height="310" rx="4" fill="#2466a8"/><rect x="410" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="520" y="250" width="100" height="310" rx="4" fill="#2d74b8"/><rect x="520" y="250" width="100" height="310" fill="url(#win)"/>
+    </g>
+    <!-- 2단지 -->
+    <g>
+      <rect x="680" y="250" width="100" height="310" rx="4" fill="#b07a1c"/><rect x="680" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="790" y="250" width="100" height="310" rx="4" fill="#c28a28"/><rect x="790" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="900" y="250" width="100" height="310" rx="4" fill="#b07a1c"/><rect x="900" y="250" width="100" height="310" fill="url(#win)"/>
+      <rect x="1010" y="250" width="100" height="310" rx="4" fill="#c28a28"/><rect x="1010" y="250" width="100" height="310" fill="url(#win)"/>
+    </g>
+    <!-- 지하 -->
+    <rect x="170" y="560" width="470" height="8" fill="#0f2a44"/>
+    <rect x="660" y="560" width="470" height="8" fill="#0f2a44"/>
+    <rect x="190" y="568" width="430" height="44" fill="url(#hatch)"/>
+    <rect x="680" y="568" width="430" height="33" fill="url(#hatch)"/>
+    <text x="405" y="597" font-size="14" font-weight="700" fill="#4a5566" text-anchor="middle">지하 4층 주차장</text>
+    <text x="895" y="590" font-size="14" font-weight="700" fill="#4a5566" text-anchor="middle">지하 3층 주차장</text>
+    <!-- 단지 라벨 -->
+    <g text-anchor="middle">
+      <rect x="305" y="170" width="200" height="60" rx="30" fill="#2466a8"/>
+      <text x="405" y="197" font-size="20" font-weight="900" fill="#fff">1단지</text>
+      <text x="405" y="218" font-size="14" fill="rgba(255,255,255,.85)">299가구 · 가촌리</text>
+      <rect x="795" y="170" width="200" height="60" rx="30" fill="#b07a1c"/>
+      <text x="895" y="197" font-size="20" font-weight="900" fill="#fff">2단지</text>
+      <text x="895" y="218" font-size="14" fill="rgba(255,255,255,.9)">299가구 · 범어리</text>
+    </g>
+    <!-- 오른쪽 핵심 -->
+    <g transform="translate(1150,250)">
+      <use href="#i-build" x="30" y="0" width="40" height="40" color="#0f2a44"/>
+      <text x="50" y="80" font-size="15" fill="#4a5566" text-anchor="middle">시공</text>
+      <text x="50" y="104" font-size="18" font-weight="900" fill="#0f2a44" text-anchor="middle">현대건설</text>
+      <use href="#i-cal" x="30" y="150" width="40" height="40" color="#b07a1c"/>
+      <text x="50" y="230" font-size="15" fill="#4a5566" text-anchor="middle">입주</text>
+      <text x="50" y="254" font-size="18" font-weight="900" fill="#0f2a44" text-anchor="middle">2029.04</text>
+    </g>
+    <text x="64" y="660" font-size="13" fill="#8a93a3">1단지: 양산시 물금읍 가촌리 971번지 일원 · 2단지: 범어리 940-2번지 일원 · 그림은 규모 이해를 위한 도식입니다.</text>
+  </svg>
 </section>
 
-<!-- 3. COMPLEX COMPARE -->
+<!-- 3. 평형 구성 -->
 <section class="slide">
-  <div class="eyebrow">02 · 단지 구성</div>
-  <h2>1단지 · 2단지 비교</h2>
-  <div class="two">
-    <div class="card">
-      <h3><span class="dot" style="background:var(--blue)"></span>1단지</h3>
-      <div class="addr">양산시 물금읍 가촌리 971번지 일원</div>
-      <dl>
-        <dt>규모</dt><dd>지하 4층 ~ 지상 20층, 4개 동</dd>
-        <dt>세대수</dt><dd class="num">299가구</dd>
-        <dt>주택형</dt><dd><div class="types"><span class="pill">68㎡</span><span class="pill hl">84㎡</span><span class="pill">159㎡</span></div></dd>
-        <dt>특징</dt><dd>소형 68㎡ 포함 · 선택 폭이 넓음</dd>
-      </dl>
-    </div>
-    <div class="card">
-      <h3><span class="dot" style="background:var(--gold)"></span>2단지</h3>
-      <div class="addr">양산시 물금읍 범어리 940-2번지 일원</div>
-      <dl>
-        <dt>규모</dt><dd>지하 3층 ~ 지상 20층, 4개 동</dd>
-        <dt>세대수</dt><dd class="num">299가구</dd>
-        <dt>주택형</dt><dd><div class="types"><span class="pill hl">84㎡</span><span class="pill">159㎡</span></div></dd>
-        <dt>특징</dt><dd>84㎡ 중심 구성 · 대형 159㎡ 포함</dd>
-      </dl>
-    </div>
-  </div>
-  <div class="banner">
-    <svg width="96" height="96" viewBox="0 0 36 36" aria-label="전용 84㎡ 약 88%">
-      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4.5"/>
-      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e9c77b" stroke-width="4.5" stroke-dasharray="88 12" stroke-dashoffset="25" stroke-linecap="butt"/>
-    </svg>
-    <div class="big num">약 88%</div>
-    <p>전체 가구의 약 88%를 <b>실수요 선호도가 가장 높은 전용 84㎡</b>로 구성했습니다.<br>
-      펜트하우스(2가구)를 제외한 전 가구가 <b>판상형 4Bay</b> 구조입니다.</p>
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>3</span></div>
+  <div class="hd"><div class="eyebrow">평형 구성</div><h2>10집 중 9집이 국민평형 84㎡</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 와플 10x10 : 88칸 -->
+    <g transform="translate(80,170)">
+      <g id="waffle"></g>
+    </g>
+    <text x="80" y="640" font-size="44" font-weight="900" fill="#0f2a44">약 88%</text>
+    <text x="264" y="640" font-size="18" fill="#4a5566">전용 84㎡</text>
+    <text x="80" y="670" font-size="14" fill="#8a93a3">나머지는 68㎡ · 159㎡</text>
+
+    <!-- 면적 비교 (한 변 = √면적) -->
+    <text x="560" y="180" font-size="17" font-weight="700" fill="#4a5566">전용면적 크기 비교</text>
+    <g transform="translate(560,200)">
+      <!-- 159: 380 / 84: 276 / 68: 248  (bottom aligned at y=400) -->
+      <rect x="0" y="20" width="380" height="380" rx="6" fill="#f3e6cc" stroke="#b07a1c" stroke-width="2"/>
+      <rect x="0" y="124" width="276" height="276" rx="6" fill="#d6e4f3" stroke="#2466a8" stroke-width="2"/>
+      <rect x="0" y="152" width="248" height="248" rx="6" fill="#0f2a44" opacity=".85"/>
+      <text x="124" y="270" font-size="30" font-weight="900" fill="#fff" text-anchor="middle">68㎡</text>
+      <text x="124" y="298" font-size="14" fill="rgba(255,255,255,.8)" text-anchor="middle">1단지</text>
+      <text x="262" y="150" font-size="26" font-weight="900" fill="#2466a8" text-anchor="end">84㎡</text>
+      <text x="366" y="56" font-size="30" font-weight="900" fill="#b07a1c" text-anchor="end">159㎡</text>
+      <text x="366" y="80" font-size="14" fill="#8a5f14" text-anchor="end">대형 · 1·2단지</text>
+    </g>
+    <!-- 오른쪽 범례 -->
+    <g transform="translate(990,260)" font-size="16">
+      <rect width="18" height="18" rx="3" fill="#0f2a44" opacity=".85"/><text x="28" y="15" fill="#1b2330" font-weight="700">68㎡</text><text x="28" y="37" fill="#8a93a3" font-size="13">1단지만 공급</text>
+      <rect y="70" width="18" height="18" rx="3" fill="#d6e4f3" stroke="#2466a8"/><text x="28" y="85" fill="#1b2330" font-weight="700">84㎡</text><text x="28" y="107" fill="#8a93a3" font-size="13">1·2단지 · 주력 평형</text>
+      <rect y="140" width="18" height="18" rx="3" fill="#f3e6cc" stroke="#b07a1c"/><text x="28" y="155" fill="#1b2330" font-weight="700">159㎡</text><text x="28" y="177" fill="#8a93a3" font-size="13">1·2단지 · 대형</text>
+    </g>
+  </svg>
 </section>
 
-<!-- 4. PRICE -->
+<!-- 4. 분양가 -->
 <section class="slide">
-  <div class="eyebrow">03 · 분양가</div>
-  <h2>주택형별 분양가 (최고가 기준)</h2>
-  <p class="lead">국민평형 전용 84㎡가 <b>5억원 초반대</b>로 책정되었습니다.</p>
-  <div class="chart-wrap">
-    <div>
-      <div class="legend"><span><i style="background:#2466a8"></i>1단지</span><span><i style="background:#b07a1c"></i>2단지</span><span style="margin-left:auto;color:var(--muted)">단위: 만원</span></div>
-      <svg width="640" height="380" viewBox="0 0 640 380" role="img" aria-label="주택형별 최고 분양가 막대 차트">
-        <g font-family="NSKR" font-size="15">
-          <!-- grid: scale 0~120,000만원 → 0~440px, x0 = 130 -->
-          <g stroke="#e3e6eb" stroke-width="1">
-            <line x1="130" y1="10" x2="130" y2="340"/>
-            <line x1="240" y1="10" x2="240" y2="340"/>
-            <line x1="350" y1="10" x2="350" y2="340"/>
-            <line x1="460" y1="10" x2="460" y2="340"/>
-            <line x1="570" y1="10" x2="570" y2="340"/>
-          </g>
-          <g fill="#8a93a3" font-size="13" text-anchor="middle">
-            <text x="130" y="362">0</text><text x="240" y="362">3억</text><text x="350" y="362">6억</text><text x="460" y="362">9억</text><text x="570" y="362">12억</text>
-          </g>
-          <!-- rows -->
-          <g fill="#4a5566" text-anchor="end" font-weight="700">
-            <text x="118" y="46">68㎡</text>
-            <text x="118" y="124">84㎡</text>
-            <text x="118" y="244">159㎡</text>
-          </g>
-          <!-- 1단지 68: 44670 → 163.8 -->
-          <rect x="130" y="28" width="163.8" height="28" rx="4" fill="#2466a8"/>
-          <text x="301" y="48" fill="#1b2330" font-weight="700" class="num">4억 4,670</text>
-          <!-- 84: 52950 → 194.2 ; 52720 → 193.3 -->
-          <rect x="130" y="96" width="194.2" height="28" rx="4" fill="#2466a8"/>
-          <text x="332" y="116" fill="#1b2330" font-weight="700">5억 2,950</text>
-          <rect x="130" y="128" width="193.3" height="28" rx="4" fill="#b07a1c"/>
-          <text x="331" y="148" fill="#1b2330" font-weight="700">5억 2,720</text>
-          <!-- 159: 113300 → 415.4 ; 109800 → 402.6 -->
-          <rect x="130" y="216" width="415.4" height="28" rx="4" fill="#2466a8"/>
-          <text x="553" y="236" fill="#1b2330" font-weight="700">11억 3,300</text>
-          <rect x="130" y="248" width="402.6" height="28" rx="4" fill="#b07a1c"/>
-          <text x="540" y="268" fill="#1b2330" font-weight="700">10억 9,800</text>
-          <text x="140" y="302" fill="#8a93a3" font-size="13">※ 68㎡는 1단지에만 공급</text>
+  <div class="hd"><div class="eyebrow">분양가 · 최고가 기준</div><h2>84㎡ 5억원 초반대</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- baseline y=600, 12억 = 400px -->
+    <g stroke="#e3e6eb">
+      <line x1="120" y1="600" x2="900" y2="600" stroke="#b7c0cd"/>
+      <line x1="120" y1="500" x2="900" y2="500"/><line x1="120" y1="400" x2="900" y2="400"/><line x1="120" y1="300" x2="900" y2="300"/><line x1="120" y1="200" x2="900" y2="200"/>
+    </g>
+    <g font-size="13" fill="#8a93a3" text-anchor="end"><text x="110" y="604">0</text><text x="110" y="504">3억</text><text x="110" y="404">6억</text><text x="110" y="304">9억</text><text x="110" y="204">12억</text></g>
+    <!-- 68: 44670→148.9 -->
+    <rect x="170" y="451.1" width="96" height="148.9" rx="4" fill="#2466a8"/><rect x="170" y="451.1" width="96" height="148.9" fill="url(#win)"/>
+    <!-- 84: 52950→176.5, 52720→175.7 -->
+    <rect x="370" y="423.5" width="96" height="176.5" rx="4" fill="#2466a8"/><rect x="370" y="423.5" width="96" height="176.5" fill="url(#win)"/>
+    <rect x="474" y="424.3" width="96" height="175.7" rx="4" fill="#b07a1c"/><rect x="474" y="424.3" width="96" height="175.7" fill="url(#win)"/>
+    <!-- 159: 113300→377.7, 109800→366 -->
+    <rect x="680" y="222.3" width="96" height="377.7" rx="4" fill="#2466a8"/><rect x="680" y="222.3" width="96" height="377.7" fill="url(#win)"/>
+    <rect x="784" y="234" width="96" height="366" rx="4" fill="#b07a1c"/><rect x="784" y="234" width="96" height="366" fill="url(#win)"/>
+    <g font-size="17" font-weight="900" fill="#1b2330" text-anchor="middle">
+      <text x="218" y="440">4억 4,670</text>
+      <text x="418" y="412">5억 2,950</text><text x="522" y="412">5억 2,720</text>
+      <text x="728" y="211">11억 3,300</text><text x="832" y="223">10억 9,800</text>
+    </g>
+    <g font-size="18" font-weight="700" fill="#4a5566" text-anchor="middle">
+      <text x="218" y="630">68㎡</text><text x="470" y="630">84㎡</text><text x="780" y="630">159㎡</text>
+    </g>
+    <!-- 범례 -->
+    <g font-size="14" fill="#4a5566"><rect x="640" y="140" width="14" height="14" rx="3" fill="#2466a8"/><text x="662" y="152">1단지</text><rect x="720" y="140" width="14" height="14" rx="3" fill="#b07a1c"/><text x="742" y="152">2단지</text><text x="900" y="152" text-anchor="end" fill="#8a93a3">단위: 만원</text></g>
+    <!-- 오른쪽 강조 -->
+    <g transform="translate(960,190)">
+      <rect width="256" height="330" rx="18" fill="#0f2a44"/>
+      <use href="#i-key" x="104" y="30" width="48" height="48" color="#e9c77b"/>
+      <text x="128" y="118" font-size="16" fill="rgba(255,255,255,.75)" text-anchor="middle">국민평형 84㎡</text>
+      <text x="128" y="170" font-size="44" font-weight="900" fill="#fff" text-anchor="middle">5억</text>
+      <text x="128" y="210" font-size="22" font-weight="900" fill="#e9c77b" text-anchor="middle">초반대</text>
+      <line x1="40" y1="240" x2="216" y2="240" stroke="rgba(255,255,255,.2)"/>
+      <text x="128" y="272" font-size="14" fill="rgba(255,255,255,.75)" text-anchor="middle">계약금 5%면</text>
+      <text x="128" y="300" font-size="20" font-weight="900" fill="#fff" text-anchor="middle">약 2,650만원</text>
+    </g>
+    <text x="64" y="680" font-size="13" fill="#8a93a3">※ 주택형별 최고가 기준이며 층·동·향에 따라 다릅니다. 발코니 확장·옵션 비용 별도. 68㎡는 1단지에만 공급됩니다.</text>
+  </svg>
+</section>
+
+<!-- 5. 계약 조건 -->
+<section class="slide">
+  <div class="hd"><div class="eyebrow">계약 조건</div><h2>입주 때까지 계약금 5%면 끝</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 3개 큰 아이콘 -->
+    <g text-anchor="middle">
+      <g transform="translate(250,250)">
+        <circle r="78" fill="#0f2a44"/><text y="14" font-size="44" font-weight="900" fill="#e9c77b">5%</text>
+        <text y="120" font-size="22" font-weight="900" fill="#0f2a44">계약금 5%</text>
+        <text y="148" font-size="15" fill="#4a5566">1차 500만원 정액</text>
+      </g>
+      <g transform="translate(640,250)">
+        <circle r="78" fill="#0f2a44"/><text y="14" font-size="40" font-weight="900" fill="#e9c77b">0원</text>
+        <text y="120" font-size="22" font-weight="900" fill="#0f2a44">중도금 무이자</text>
+        <text y="148" font-size="15" fill="#4a5566">이자 부담 없음</text>
+      </g>
+      <g transform="translate(1030,250)">
+        <circle r="78" fill="#b07a1c"/><use href="#i-unlock" x="-30" y="-32" width="60" height="60" color="#fff"/>
+        <text y="120" font-size="22" font-weight="900" fill="#0f2a44">전매제한 없음</text>
+        <text y="148" font-size="15" fill="#4a5566">비규제지역</text>
+      </g>
+      <text x="445" y="262" font-size="40" fill="#b7c0cd">+</text><text x="835" y="262" font-size="40" fill="#b7c0cd">+</text>
+    </g>
+    <!-- 납부 흐름 막대 -->
+    <text x="120" y="480" font-size="16" font-weight="700" fill="#4a5566">예시 · 84㎡ 1단지 최고가 5억 2,950만원</text>
+    <g transform="translate(120,500)">
+      <rect x="0" y="0" width="52" height="64" rx="6" fill="#b07a1c"/>
+      <rect x="56" y="0" width="984" height="64" rx="6" fill="url(#hatch)"/>
+      <text x="26" y="40" font-size="18" font-weight="900" fill="#fff" text-anchor="middle">5%</text>
+      <text x="548" y="30" font-size="18" font-weight="900" fill="#0f2a44" text-anchor="middle">95% · 입주 시 (중도금 무이자 대출 + 잔금)</text>
+      <text x="548" y="52" font-size="14" fill="#4a5566" text-anchor="middle">입주 전까지 추가 현금 부담 없음</text>
+      <path d="M26 72 L26 96" stroke="#b07a1c" stroke-width="2"/>
+      <text x="0" y="120" font-size="20" font-weight="900" fill="#b07a1c">지금 약 2,648만원</text>
+      <text x="0" y="144" font-size="14" fill="#4a5566">1차 500만원 + 잔여 2,148만원</text>
+      <path d="M1036 72 L1036 96" stroke="#0f2a44" stroke-width="2"/>
+      <text x="1040" y="120" font-size="20" font-weight="900" fill="#0f2a44" text-anchor="end">2029년 4월 입주</text>
+    </g>
+    <text x="64" y="690" font-size="13" fill="#8a93a3">※ 단순 계산 예시입니다. 실제 납부 일정·금액·대출 조건은 공급계약서와 입주자모집공고를 따릅니다.</text>
+  </svg>
+</section>
+
+<!-- 6. 교통 -->
+<section class="slide">
+  <div class="hd"><div class="eyebrow">교통</div><h2>철도 3개 노선 + IC 2곳</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 지도 배경 -->
+    <clipPath id="mapclip"><rect x="64" y="130" width="760" height="540" rx="18"/></clipPath>
+    <rect x="64" y="130" width="760" height="540" rx="18" fill="#f1f4f8"/>
+    <g clip-path="url(#mapclip)">
+    <!-- 낙동강 -->
+    <path d="M150 130 C 170 250, 110 330, 150 430 S 200 600, 170 670" fill="none" stroke="url(#riverg)" stroke-width="46" stroke-linecap="round"/>
+    <text x="118" y="560" font-size="14" font-weight="700" fill="#5f84ad" transform="rotate(-80 118 560)">낙동강</text>
+    <!-- KTX 경부선 (강을 따라) -->
+    <path d="M230 140 C 240 260, 205 330, 240 420 S 280 580, 260 670" fill="none" stroke="#6b7a8f" stroke-width="5" stroke-dasharray="14 6"/>
+    <!-- 부산 2호선 -->
+    <path d="M380 300 L 420 420 L 460 540 L 500 700" fill="none" stroke="#3aa655" stroke-width="7" stroke-linecap="round"/>
+    <!-- 양산선 -->
+    <path d="M760 660 L 700 560 L 640 470 L 590 380 L 560 280 L 560 170" fill="none" stroke="#b07a1c" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 0"/>
+    <!-- 고속도로 -->
+    <path d="M190 250 C 300 260, 420 250, 520 270" fill="none" stroke="#c9ced6" stroke-width="10" stroke-linecap="round"/>
+    </g>
+    <!-- 역 -->
+    <g>
+      <circle cx="250" cy="470" r="12" fill="#fff" stroke="#6b7a8f" stroke-width="4"/>
+      <circle cx="460" cy="540" r="11" fill="#fff" stroke="#3aa655" stroke-width="4"/>
+      <circle cx="560" cy="170" r="11" fill="#fff" stroke="#b07a1c" stroke-width="4"/>
+      <circle cx="760" cy="660" r="11" fill="#fff" stroke="#b07a1c" stroke-width="4"/>
+      <g transform="translate(250,258)"><rect x="-26" y="-14" width="52" height="28" rx="6" fill="#4a5566"/><text y="5" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">IC</text></g>
+      <g transform="translate(480,262)"><rect x="-26" y="-14" width="52" height="28" rx="6" fill="#4a5566"/><text y="5" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">IC</text></g>
+    </g>
+    <g font-size="15" font-weight="900" fill="#1b2330">
+      <text x="270" y="476">KTX 물금역</text>
+      <text x="478" y="546">증산역</text>
+      <text x="578" y="176">북정</text>
+      <text x="738" y="648" text-anchor="end">노포 <tspan font-size="12" fill="#b07a1c">1호선 환승</tspan></text>
+      <text x="236" y="236" font-size="13" fill="#4a5566">물금IC</text>
+      <text x="456" y="240" font-size="13" fill="#4a5566">남양산IC</text>
+      <text x="398" y="650" font-size="13" fill="#3aa655" text-anchor="end">부산 도심 ↓</text>
+      
+    </g>
+    <!-- 단지 핀 -->
+    <g transform="translate(320,370)">
+      <circle r="44" fill="#0f2a44" opacity=".12"/>
+      <path d="M0 -40 C 22 -40 30 -22 30 -12 C 30 8 0 30 0 30 C 0 30 -30 8 -30 -12 C -30 -22 -22 -40 0 -40Z" fill="#0f2a44" transform="translate(0,-18)"/>
+      <circle cx="0" cy="-30" r="10" fill="#e9c77b"/>
+      <rect x="-70" y="22" width="140" height="30" rx="15" fill="#0f2a44"/>
+      <text y="42" font-size="14" font-weight="900" fill="#fff" text-anchor="middle">양산더스카이</text>
+    </g>
+    <text x="84" y="160" font-size="12" fill="#8a93a3">개념도 · 실제 위치·거리·축척과 다름</text>
+
+    <!-- 오른쪽 노선 카드 -->
+    <g transform="translate(860,150)">
+      <g><rect width="356" height="96" rx="14" fill="#fff" stroke="#e3e6eb"/><circle cx="46" cy="48" r="26" fill="#6b7a8f"/><use href="#i-train" x="32" y="34" width="28" height="28" color="#fff"/><text x="88" y="42" font-size="19" font-weight="900" fill="#1b2330">KTX 물금역</text><text x="88" y="68" font-size="14" fill="#4a5566">고속철도로 전국 연결</text></g>
+      <g transform="translate(0,112)"><rect width="356" height="96" rx="14" fill="#fff" stroke="#e3e6eb"/><circle cx="46" cy="48" r="26" fill="#3aa655"/><text x="46" y="56" font-size="22" font-weight="900" fill="#fff" text-anchor="middle">2</text><text x="88" y="42" font-size="19" font-weight="900" fill="#1b2330">부산 2호선 증산역</text><text x="88" y="68" font-size="14" fill="#4a5566">부산 도심 직결</text></g>
+      <g transform="translate(0,224)"><rect width="356" height="96" rx="14" fill="#fff" stroke="#b07a1c" stroke-width="2"/><circle cx="46" cy="48" r="26" fill="#b07a1c"/><use href="#i-train" x="32" y="34" width="28" height="28" color="#fff"/><text x="88" y="42" font-size="19" font-weight="900" fill="#1b2330">양산선 <tspan fill="#b07a1c" font-size="14">2026.12 개통 목표</tspan></text><text x="88" y="68" font-size="14" fill="#4a5566">노포 ~ 북정 · 11.43㎞ · 7개역</text></g>
+      <g transform="translate(0,336)"><rect width="356" height="96" rx="14" fill="#fff" stroke="#e3e6eb"/><circle cx="46" cy="48" r="26" fill="#4a5566"/><use href="#i-car" x="32" y="34" width="28" height="28" color="#fff"/><text x="88" y="42" font-size="19" font-weight="900" fill="#1b2330">물금IC · 남양산IC</text><text x="88" y="68" font-size="14" fill="#4a5566">부산·김해 차량 이동</text></g>
+      <text x="0" y="470" font-size="13" fill="#8a93a3">+ 부산·울산·양산 광역철도 2031년 개통 목표</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 7. 생활 인프라 -->
+<section class="slide">
+  <div class="hd"><div class="eyebrow">생활 인프라</div><h2>필요한 건 모두 가까이</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <g transform="translate(640,410)">
+      <circle r="250" fill="none" stroke="#e3e6eb" stroke-width="2" stroke-dasharray="4 8"/>
+      <circle r="150" fill="none" stroke="#e3e6eb" stroke-width="2" stroke-dasharray="4 8"/>
+      <!-- 연결선 -->
+      <g stroke="#d5dbe4" stroke-width="2">
+        <line x1="0" y1="0" x2="-360" y2="-110"/><line x1="0" y1="0" x2="-360" y2="130"/>
+        <line x1="0" y1="0" x2="360" y2="-110"/><line x1="0" y1="0" x2="360" y2="130"/>
+        <line x1="0" y1="0" x2="0" y2="-215"/><line x1="0" y1="0" x2="0" y2="215"/>
+      </g>
+      <!-- 중심 -->
+      <circle r="78" fill="#0f2a44"/>
+      <use href="#i-build" x="-20" y="-50" width="40" height="40" color="#e9c77b"/>
+      <text y="16" font-size="15" font-weight="700" fill="#e9c77b" text-anchor="middle">힐스테이트</text>
+      <text y="38" font-size="17" font-weight="900" fill="#fff" text-anchor="middle">양산더스카이</text>
+    </g>
+    <!-- 6개 버블 -->
+    <g text-anchor="middle">
+      <g transform="translate(640,170)"><circle r="44" fill="#fff" stroke="#b07a1c" stroke-width="3"/><use href="#i-swim" x="-22" y="-22" width="44" height="44" color="#b07a1c"/><text x="70" y="-6" font-size="18" font-weight="900" fill="#1b2330" text-anchor="start">바로 옆 체육센터</text><text x="70" y="16" font-size="13" fill="#4a5566" text-anchor="start">수영장 · 헬스 · 골프 · 볼링</text></g>
+      <g transform="translate(280,300)"><circle r="44" fill="#fff" stroke="#2466a8" stroke-width="3"/><use href="#i-school" x="-22" y="-22" width="44" height="44" color="#2466a8"/><text y="72" font-size="18" font-weight="900" fill="#1b2330">초·중·고</text><text y="94" font-size="13" fill="#4a5566">서남초 · 물금초 · 물금중</text><text y="112" font-size="13" fill="#4a5566">물금고 · 범어고</text></g>
+      <g transform="translate(1000,300)"><circle r="44" fill="#fff" stroke="#2466a8" stroke-width="3"/><use href="#i-hospital" x="-22" y="-22" width="44" height="44" color="#2466a8"/><text y="72" font-size="18" font-weight="900" fill="#1b2330">양산부산대병원</text><text y="94" font-size="13" fill="#4a5566">1,200여 병상</text></g>
+      <g transform="translate(280,540)"><circle r="44" fill="#fff" stroke="#2466a8" stroke-width="3"/><use href="#i-cart" x="-22" y="-22" width="44" height="44" color="#2466a8"/><text y="72" font-size="18" font-weight="900" fill="#1b2330">쇼핑</text><text y="94" font-size="13" fill="#4a5566">이마트 · 하나로마트 · 나래메트로시티</text></g>
+      <g transform="translate(1000,540)"><circle r="44" fill="#fff" stroke="#2466a8" stroke-width="3"/><use href="#i-film" x="-22" y="-22" width="44" height="44" color="#2466a8"/><text y="72" font-size="18" font-weight="900" fill="#1b2330">문화 · 교통</text><text y="94" font-size="13" fill="#4a5566">롯데시네마 · 메가박스 · 시외버스터미널</text></g>
+      <g transform="translate(640,650)"><circle r="44" fill="#fff" stroke="#3aa655" stroke-width="3"/><use href="#i-tree" x="-22" y="-22" width="44" height="44" color="#3aa655"/><text x="-70" y="-6" font-size="18" font-weight="900" fill="#1b2330" text-anchor="end">양산디자인공원 18만㎡</text><text x="-70" y="16" font-size="13" fill="#4a5566" text-anchor="end">오봉산 · 서남체육공원</text></g>
+    </g>
+  </svg>
+</section>
+
+<!-- 8. 상품 설계 -->
+<section class="slide">
+  <div class="hd"><div class="eyebrow">상품 설계</div><h2>넓고 · 밝고 · 조용한 집</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 4Bay 평면 도식 -->
+    <g transform="translate(64,150)">
+      <rect width="370" height="400" rx="18" fill="#f1f4f8"/>
+      <use href="#i-sun" x="163" y="18" width="44" height="44" color="#b07a1c"/>
+      <g stroke="#e9c77b" stroke-width="2" stroke-dasharray="3 5"><line x1="90" y1="70" x2="75" y2="110"/><line x1="185" y1="70" x2="165" y2="110"/><line x1="185" y1="70" x2="215" y2="110"/><line x1="280" y1="70" x2="300" y2="110"/></g>
+      <g transform="translate(30,115)">
+        <rect width="310" height="170" fill="#fff" stroke="#0f2a44" stroke-width="3"/>
+        <line x1="70" y1="0" x2="70" y2="110" stroke="#0f2a44" stroke-width="2"/>
+        <line x1="210" y1="0" x2="210" y2="110" stroke="#0f2a44" stroke-width="2"/>
+        <line x1="250" y1="0" x2="250" y2="110" stroke="#0f2a44" stroke-width="2"/>
+        <line x1="0" y1="110" x2="70" y2="110" stroke="#0f2a44" stroke-width="2"/>
+        <line x1="210" y1="110" x2="310" y2="110" stroke="#0f2a44" stroke-width="2"/>
+        <rect x="0" y="-5" width="310" height="8" fill="#8fb3d9"/>
+        <g font-size="13" font-weight="700" fill="#4a5566" text-anchor="middle">
+          <text x="35" y="60">침실</text><text x="140" y="60">거실</text><text x="230" y="52" font-size="11">침실</text><text x="280" y="60">침실</text>
+          <text x="140" y="150">주방 · 식당</text>
         </g>
-      </svg>
-    </div>
-    <div class="side">
-      <div class="box"><h4>84㎡ · 1단지</h4><div class="v num">5억 2,950만원</div><p>최고가 기준</p></div>
-      <div class="box"><h4>84㎡ · 2단지</h4><div class="v num">5억 2,720만원</div><p>최고가 기준</p></div>
-      <div class="box"><h4>68㎡ · 1단지</h4><div class="v num">4억 4,670만원</div><p>1단지 한정 · 최고가 기준</p></div>
-    </div>
-  </div>
-  <p class="note">※ 층·향·동에 따라 분양가가 다르며, 표시 금액은 주택형별 최고가입니다. 발코니 확장 및 옵션 비용은 별도입니다.</p>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>4</span></div>
+      </g>
+      <g font-size="22" font-weight="900" fill="#b07a1c" text-anchor="middle"><text x="65" y="102">1</text><text x="170" y="102">2</text><text x="260" y="102">3</text><text x="310" y="102">4</text></g>
+      <text x="185" y="340" font-size="26" font-weight="900" fill="#0f2a44" text-anchor="middle">판상형 4Bay</text>
+      <text x="185" y="366" font-size="14" fill="#4a5566" text-anchor="middle">남향 4칸 · 채광·통풍 (펜트하우스 2가구 제외)</text>
+    </g>
+    <!-- 천장고 -->
+    <g transform="translate(456,150)">
+      <rect width="370" height="400" rx="18" fill="#f1f4f8"/>
+      <line x1="40" y1="60" x2="330" y2="60" stroke="#0f2a44" stroke-width="4"/>
+      <line x1="40" y1="290" x2="330" y2="290" stroke="#0f2a44" stroke-width="4"/>
+      <path d="M100 48 L100 40 L270 40 L270 48" fill="none" stroke="#b07a1c" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="185" y="34" font-size="12" fill="#b07a1c" text-anchor="middle">우물천장 2.5m</text>
+      <!-- 사람 실루엣 170cm ≈ 164px (2.4m=230px) -->
+      <g fill="#8fb3d9"><circle cx="150" cy="140" r="14"/><rect x="136" y="156" width="28" height="70" rx="12"/><rect x="138" y="220" width="10" height="70" rx="4"/><rect x="152" y="220" width="10" height="70" rx="4"/></g>
+      <line x1="270" y1="64" x2="270" y2="286" stroke="#0f2a44" stroke-width="2"/>
+      <path d="M263 74 L270 64 L277 74 M263 276 L270 286 L277 276" fill="none" stroke="#0f2a44" stroke-width="2"/>
+      <text x="236" y="186" font-size="40" font-weight="900" fill="#0f2a44" text-anchor="middle" transform="rotate(-90 236 180)">2.4m</text>
+      <text x="185" y="340" font-size="26" font-weight="900" fill="#0f2a44" text-anchor="middle">높은 천장 + 유리난간</text>
+      <text x="185" y="366" font-size="14" fill="#4a5566" text-anchor="middle">거실 유리난간(안방 제외)으로 탁 트인 시야</text>
+    </g>
+    <!-- 층간소음 -->
+    <g transform="translate(848,150)">
+      <rect width="368" height="400" rx="18" fill="#f1f4f8"/>
+      <g transform="translate(44,70)">
+        <rect width="280" height="26" fill="#d9c3a0"/><text x="140" y="18" font-size="12" font-weight="700" fill="#5a4320" text-anchor="middle">마감재</text>
+        <rect y="30" width="280" height="30" fill="#c9ced6"/><text x="140" y="50" font-size="12" font-weight="700" fill="#1b2330" text-anchor="middle">몰탈</text>
+        <rect y="64" width="280" height="36" fill="#0f2a44"/><text x="140" y="87" font-size="13" font-weight="900" fill="#e9c77b" text-anchor="middle">H 사일런트 완충 구조</text>
+        <rect y="104" width="280" height="60" fill="#8a93a3"/><text x="140" y="139" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">콘크리트 슬래브</text>
+        <g stroke="#b07a1c" stroke-width="2.5" fill="none"><path d="M20 -20 q 8 -8 16 0 t 16 0"/><path d="M200 -20 q 8 -8 16 0 t 16 0"/></g>
+        <path d="M110 190 q 10 -10 20 0 t 20 0 t 20 0" stroke="#b7c0cd" stroke-width="2" fill="none"/>
+        <text x="140" y="214" font-size="12" fill="#8a93a3" text-anchor="middle">아랫집으로 가는 소음 저감</text>
+      </g>
+      <text x="184" y="340" font-size="26" font-weight="900" fill="#0f2a44" text-anchor="middle">층간소음 저감</text>
+      <text x="184" y="366" font-size="14" fill="#4a5566" text-anchor="middle">현대건설 특허 H 사일런트 홈 시스템</text>
+    </g>
+    <!-- 커뮤니티 -->
+    <g transform="translate(64,576)">
+      <rect width="1152" height="96" rx="18" fill="#0f2a44"/>
+      <text x="36" y="56" font-size="18" font-weight="900" fill="#e9c77b">커뮤니티</text>
+      <g font-size="15" font-weight="700" fill="#fff">
+        <g transform="translate(170,0)"><use href="#i-golf" x="0" y="30" width="36" height="36" color="#fff"/><text x="46" y="54">실내 골프연습장</text></g>
+        <g transform="translate(380,0)"><use href="#i-gym" x="0" y="30" width="36" height="36" color="#fff"/><text x="46" y="54">피트니스</text></g>
+        <g transform="translate(540,0)"><use href="#i-sofa" x="0" y="30" width="36" height="36" color="#fff"/><text x="46" y="54">힐스 라운지</text></g>
+        <g transform="translate(720,0)"><use href="#i-book" x="0" y="30" width="36" height="36" color="#fff"/><text x="46" y="54">스터디 라운지</text></g>
+        <g transform="translate(910,0)"><use href="#i-kid" x="0" y="30" width="36" height="36" color="#fff"/><text x="46" y="54">H아이숲 실내놀이</text></g>
+      </g>
+    </g>
+  </svg>
 </section>
 
-<!-- 5. PAYMENT -->
+<!-- 9. 미래가치 -->
 <section class="slide">
-  <div class="eyebrow">04 · 계약 조건</div>
-  <h2>초기 자금 부담을 낮춘 계약 조건</h2>
-  <p class="lead">계약금 5%로 입주 시까지 추가 부담을 줄이고, 비규제지역으로 전매제한이 없습니다.</p>
-  <div class="steps">
-    <div class="step"><div class="circle">1</div><h4>계약금 5%</h4><p>1차 계약금 <b>500만원 정액제</b><br>잔여 계약금은 2차 납부</p></div>
-    <div class="step"><div class="circle">2</div><h4>중도금 무이자</h4><p>중도금 이자 부담 없음<br>입주 시까지 계약금 5%로 끝</p></div>
-    <div class="step gold"><div class="circle">3</div><h4>잔금 · 입주</h4><p>2029년 4월 입주 예정<br>입주 시 잔금 납부</p></div>
-  </div>
-  <div class="calc">
-    <div class="box">
-      <h4>예시 · 전용 84㎡ 1단지 (최고가 5억 2,950만원)</h4>
-      <div class="row"><span>계약금 5%</span><b class="num">2,647만 5천원</b></div>
-      <div class="row"><span>└ 1차 계약금 (정액)</span><b class="num">500만원</b></div>
-      <div class="row"><span>└ 잔여 계약금</span><b class="num">2,147만 5천원</b></div>
-      <div class="row"><span>중도금 이자</span><b>무이자</b></div>
-    </div>
-    <div class="badge3">
-      <div class="badge"><div class="ic">5%</div><div><b>계약금 5%</b><span>1차 500만원 정액 · 초기 목돈 부담 최소화</span></div></div>
-      <div class="badge"><div class="ic">0</div><div><b>중도금 무이자</b><span>입주 전까지 이자 부담 없음</span></div></div>
-      <div class="badge"><div class="ic">✓</div><div><b>전매제한 없음</b><span>양산시 비규제지역</span></div></div>
-    </div>
-  </div>
-  <p class="note">※ 예시는 최고가 기준 단순 계산이며, 실제 납부 일정·금액은 공급계약서 및 입주자모집공고를 따릅니다.</p>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>5</span></div>
+  <div class="hd"><div class="eyebrow">미래가치</div><h2>10년 만의 새 아파트 + 개발 호재</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <!-- 로드맵 -->
+    <path d="M90 250 L 1190 250" stroke="#0f2a44" stroke-width="6" stroke-linecap="round"/>
+    <g text-anchor="middle">
+      <g transform="translate(160,250)"><circle r="36" fill="#fff" stroke="#8a93a3" stroke-width="4"/><use href="#i-new" x="-18" y="-18" width="36" height="36" color="#8a93a3"/><text y="-54" font-size="16" font-weight="900" fill="#8a93a3">2015 ~</text><text y="68" font-size="16" font-weight="900" fill="#1b2330">새 아파트 공급 없음</text><text y="90" font-size="13" fill="#4a5566">가촌리 일대 약 10년</text></g>
+      <g transform="translate(410,250)"><circle r="36" fill="#fff" stroke="#0f2a44" stroke-width="4"/><use href="#i-train" x="-18" y="-18" width="36" height="36" color="#0f2a44"/><text y="-54" font-size="16" font-weight="900" fill="#b07a1c">2026.11</text><text y="68" font-size="16" font-weight="900" fill="#1b2330">KTX 물금역 착공 예정</text><text y="90" font-size="13" fill="#4a5566">보도 기준</text></g>
+      <g transform="translate(640,250)"><circle r="36" fill="#fff" stroke="#b07a1c" stroke-width="4"/><use href="#i-train" x="-18" y="-18" width="36" height="36" color="#b07a1c"/><text y="-54" font-size="16" font-weight="900" fill="#b07a1c">2026.12</text><text y="68" font-size="16" font-weight="900" fill="#1b2330">양산선 개통 목표</text><text y="90" font-size="13" fill="#4a5566">노포 ~ 북정</text></g>
+      <g transform="translate(880,250)"><circle r="44" fill="#b07a1c"/><use href="#i-key" x="-22" y="-22" width="44" height="44" color="#fff"/><text y="-60" font-size="18" font-weight="900" fill="#b07a1c">2029.04</text><text y="76" font-size="17" font-weight="900" fill="#0f2a44">입주 예정</text></g>
+      <g transform="translate(1110,250)"><circle r="36" fill="#fff" stroke="#0f2a44" stroke-width="4"/><use href="#i-train" x="-18" y="-18" width="36" height="36" color="#0f2a44"/><text y="-54" font-size="16" font-weight="900" fill="#b07a1c">2031</text><text y="68" font-size="16" font-weight="900" fill="#1b2330">부울 광역철도</text><text y="90" font-size="13" fill="#4a5566">개통 목표 · 47.6㎞</text></g>
+    </g>
+    <!-- 시세 -->
+    <g transform="translate(64,400)">
+      <rect width="560" height="270" rx="18" fill="#f1f4f8"/>
+      <use href="#i-up" x="28" y="24" width="30" height="30" color="#b07a1c"/>
+      <text x="68" y="46" font-size="17" font-weight="900" fill="#1b2330">인근 아파트 실거래가</text>
+      <!-- 0~7억 -> 150px, base y=220 -->
+      <line x1="40" y1="220" x2="330" y2="220" stroke="#b7c0cd"/>
+      <rect x="70" y="116.5" width="90" height="103.5" rx="4" fill="#8fb3d9"/>
+      <rect x="200" y="99.1" width="90" height="120.9" rx="4" fill="#2466a8"/>
+      <g font-size="17" font-weight="900" fill="#1b2330" text-anchor="middle"><text x="115" y="106">4.83억</text><text x="245" y="89">5.64억</text></g>
+      <g font-size="13" fill="#4a5566" text-anchor="middle"><text x="115" y="242">2026.02</text><text x="245" y="242">2026.08</text></g>
+      <text x="440" y="150" font-size="40" font-weight="900" fill="#b07a1c" text-anchor="middle">+8천만</text>
+      <text x="440" y="178" font-size="14" fill="#4a5566" text-anchor="middle">6개월 만에</text>
+      <text x="440" y="226" font-size="12" fill="#8a93a3" text-anchor="middle">대방노블랜드8차 84㎡ 18층</text>
+    </g>
+    <!-- 기타 호재 -->
+    <g transform="translate(652,400)">
+      <rect width="272" height="270" rx="18" fill="#f1f4f8"/>
+      <circle cx="136" cy="80" r="44" fill="#0f2a44"/><use href="#i-globe" x="112" y="56" width="48" height="48" color="#e9c77b"/>
+      <text x="136" y="160" font-size="18" font-weight="900" fill="#1b2330" text-anchor="middle">UN 국제물류센터</text>
+      <text x="136" y="184" font-size="14" fill="#4a5566" text-anchor="middle">유치 추진</text>
+      <text x="136" y="206" font-size="12" fill="#8a93a3" text-anchor="middle">국정운영 5개년 계획안 포함</text>
+    </g>
+    <g transform="translate(944,400)">
+      <rect width="272" height="270" rx="18" fill="#f1f4f8"/>
+      <circle cx="136" cy="80" r="44" fill="#0f2a44"/><use href="#i-dna" x="112" y="56" width="48" height="48" color="#e9c77b"/>
+      <text x="136" y="160" font-size="18" font-weight="900" fill="#1b2330" text-anchor="middle">의료 · 바이오 클러스터</text>
+      <text x="136" y="184" font-size="14" fill="#4a5566" text-anchor="middle">양산부산대병원 중심</text>
+      <text x="136" y="206" font-size="12" fill="#8a93a3" text-anchor="middle">바이오 랩 허브 국비 5억원 확보</text>
+    </g>
+  </svg>
 </section>
 
-<!-- 6. LOCATION -->
+<!-- 10. 요약 -->
 <section class="slide">
-  <div class="eyebrow">05 · 교통</div>
-  <h2>부산·김해를 잇는 광역 교통망</h2>
-  <div class="loc">
-    <div class="diagram">
-      <svg width="100%" height="100%" viewBox="0 0 640 470" role="img" aria-label="단지 중심 교통망 개념도">
-        <g font-family="NSKR">
-          <text x="20" y="30" fill="#8a93a3" font-size="13">개념도 (실제 거리·축척과 다름)</text>
-          <!-- links -->
-          <g stroke="#b7c0cd" stroke-width="2" stroke-dasharray="6 6">
-            <line x1="320" y1="240" x2="130" y2="110"/>
-            <line x1="320" y1="240" x2="520" y2="110"/>
-            <line x1="320" y1="240" x2="120" y2="380"/>
-            <line x1="320" y1="240" x2="530" y2="380"/>
-          </g>
-          <!-- center -->
-          <circle cx="320" cy="240" r="72" fill="#0f2a44"/>
-          <circle cx="320" cy="240" r="84" fill="none" stroke="#b07a1c" stroke-width="2"/>
-          <text x="320" y="232" fill="#e9c77b" font-size="15" font-weight="700" text-anchor="middle">힐스테이트</text>
-          <text x="320" y="256" fill="#fff" font-size="17" font-weight="900" text-anchor="middle">양산더스카이</text>
-          <!-- nodes -->
-          <g font-size="16" font-weight="900" text-anchor="middle">
-            <rect x="40" y="70" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
-            <text x="130" y="100" fill="#0f2a44">KTX 물금역</text>
-            <text x="130" y="124" fill="#4a5566" font-size="13" font-weight="400">고속철도 이용</text>
-
-            <rect x="430" y="70" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
-            <text x="520" y="100" fill="#0f2a44">부산 2호선 증산역</text>
-            <text x="520" y="124" fill="#4a5566" font-size="13" font-weight="400">부산 도심 연결</text>
-
-            <rect x="30" y="345" width="180" height="70" rx="12" fill="#fff" stroke="#2466a8" stroke-width="2"/>
-            <text x="120" y="375" fill="#0f2a44">물금IC · 남양산IC</text>
-            <text x="120" y="399" fill="#4a5566" font-size="13" font-weight="400">부산·김해 차량 이동</text>
-
-            <rect x="440" y="345" width="180" height="70" rx="12" fill="#fff" stroke="#b07a1c" stroke-width="2"/>
-            <text x="530" y="375" fill="#0f2a44">도시철도 양산선</text>
-            <text x="530" y="399" fill="#b07a1c" font-size="13" font-weight="700">2026.12 개통 목표</text>
-          </g>
-          <text x="320" y="355" fill="#4a5566" font-size="14" text-anchor="middle">황산로 · 부산대학로</text>
-          <text x="320" y="374" fill="#8a93a3" font-size="13" text-anchor="middle">양산 시내 이동</text>
-        </g>
-      </svg>
-    </div>
-    <div class="list">
-      <div class="li"><span class="t">철도</span><div><b>KTX 물금역</b><span>고속철도 이용 편리 · 11월 착공 사업 예정(보도 기준)</span></div></div>
-      <div class="li"><span class="t">지하철</span><div><b>부산도시철도 2호선 증산역</b><span>부산 도심 접근</span></div></div>
-      <div class="li"><span class="t g">개통 예정</span><div><b>도시철도 양산선 (노포 ~ 북정)</b><span>총연장 11.43㎞ · 7개 정거장 · 2026년 12월 개통 목표, 시험운행 중</span></div></div>
-      <div class="li"><span class="t g">계획</span><div><b>부산·울산·양산 광역철도</b><span>KTX 울산역 ~ 양산 웅상 ~ 부산 노포역 · 47.6㎞ 11개 정거장 · 2031년 개통 목표</span></div></div>
-      <div class="li"><span class="t">도로</span><div><b>물금IC · 남양산IC</b><span>부산·김해 방면 차량 접근</span></div></div>
-    </div>
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>6</span></div>
+  <div class="hd"><div class="eyebrow">한눈에 정리</div><h2>힐스테이트 양산더스카이, 6가지 이유</h2></div>
+  <svg class="art" viewBox="0 0 1280 720">
+    <g text-anchor="middle">
+      <g transform="translate(64,150)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#0f2a44"/><use href="#i-new" x="160" y="44" width="40" height="40" color="#e9c77b"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">10년 만의 새 아파트</text><text x="180" y="168" font-size="14" fill="#4a5566">양산 첫 힐스테이트</text></g>
+      <g transform="translate(460,150)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#0f2a44"/><use href="#i-train" x="160" y="44" width="40" height="40" color="#e9c77b"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">철도 교통 호재</text><text x="180" y="168" font-size="14" fill="#4a5566">양산선 · KTX · 2호선 · 광역철도</text></g>
+      <g transform="translate(856,150)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#0f2a44"/><use href="#i-won" x="160" y="44" width="40" height="40" color="#e9c77b"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">84㎡ 5억 초반</text><text x="180" y="168" font-size="14" fill="#4a5566">계약금 5% · 중도금 무이자</text></g>
+      <g transform="translate(64,374)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#b07a1c"/><use href="#i-unlock" x="160" y="44" width="40" height="40" color="#fff"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">전매제한 없음</text><text x="180" y="168" font-size="14" fill="#4a5566">비규제지역</text></g>
+      <g transform="translate(460,374)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#0f2a44"/><use href="#i-hospital" x="160" y="44" width="40" height="40" color="#e9c77b"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">완성된 생활권</text><text x="180" y="168" font-size="14" fill="#4a5566">병원 · 마트 · 학교 · 공원</text></g>
+      <g transform="translate(856,374)"><rect width="360" height="200" rx="18" fill="#f1f4f8"/><circle cx="180" cy="64" r="38" fill="#0f2a44"/><use href="#i-mute" x="160" y="44" width="40" height="40" color="#e9c77b"/><text x="180" y="140" font-size="22" font-weight="900" fill="#0f2a44">4Bay · 층간소음 저감</text><text x="180" y="168" font-size="14" fill="#4a5566">천장고 2.4m · 유리난간</text></g>
+    </g>
+    <text x="64" y="628" font-size="12" fill="#8a93a3">※ 2026년 6~8월 언론 보도(한국경제, 서울경제, 이데일리, 뉴시스, 아시아경제, 경남도민일보 등)와 힐스테이트 분양 페이지 공개 정보를 바탕으로 만든 상담 참고 자료입니다.</text>
+    <text x="64" y="650" font-size="12" fill="#8a93a3">※ 분양가·계약조건·입주시기·개발계획은 바뀔 수 있으며, 최종 내용은 입주자모집공고와 공급계약서를 확인하시기 바랍니다. 그림은 이해를 돕기 위한 도식입니다.</text>
+  </svg>
 </section>
 
-<!-- 7. INFRA -->
-<section class="slide">
-  <div class="eyebrow">06 · 교육 · 생활 인프라</div>
-  <h2>이미 완성된 물금 생활권</h2>
-  <div class="grid4">
-    <div class="infra">
-      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></div>
-      <div><h4>교육</h4><p><span class="hl">서남초등학교</span>를 비롯해 물금초 · 물금중 · 물금고 · 범어고 등 초·중·고 인접</p></div>
-    </div>
-    <div class="infra">
-      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6"/></svg></div>
-      <div><h4>의료</h4><p><span class="hl">양산부산대학교병원</span>(1,200여 병상) 인접 — 대형 종합병원 이용 편리</p></div>
-    </div>
-    <div class="infra">
-      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7a3 3 0 016 0"/></svg></div>
-      <div><h4>쇼핑 · 문화</h4><p>이마트 양산점 · 하나로마트 양산점 · 롯데시네마 양산물금점 · 메가박스 양산/양산증산점 · 나래메트로시티 · 양산시외버스터미널</p></div>
-    </div>
-    <div class="infra">
-      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M12 3l6 9H6z"/><path d="M12 9l7 10H5z"/><path d="M12 19v3"/></svg></div>
-      <div><h4>공원 · 녹지</h4><p><span class="hl">양산디자인공원(약 18만㎡)</span> · 오봉산 · 서남체육공원 — 산책로, 유아숲, 자전거도로, 전망대 등</p></div>
-    </div>
-    <div class="infra" style="grid-column: span 2;">
-      <div class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f2a44" stroke-width="2"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg></div>
-      <div><h4>스포츠</h4><p>단지 <span class="hl">바로 옆 양산중앙국민체육센터</span> — 수영장 · 헬스장 · 실내골프연습장 · 볼링장</p></div>
-    </div>
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>7</span></div>
-</section>
-
-<!-- 8. PRODUCT -->
-<section class="slide">
-  <div class="eyebrow">07 · 상품 설계</div>
-  <h2>힐스테이트가 만드는 새 기준의 주거</h2>
-  <div class="feat">
-    <div class="f"><div class="v">4Bay</div><h4>판상형 4Bay 설계</h4><p>펜트하우스(2가구) 제외 전 가구 적용 · 채광과 통풍 우수</p></div>
-    <div class="f"><div class="v num">2.4<small>m</small></div><h4>높은 천장고</h4><p>기본 2.4m, 우물천장 포함 2.5m로 실내 개방감 강화</p></div>
-    <div class="f"><div class="v">유리난간</div><h4>탁 트인 거실</h4><p>안방 제외 거실에 철제 대신 유리난간 적용 · 세련된 외관</p></div>
-    <div class="f"><div class="v">H 사일런트</div><h4>층간소음 저감</h4><p>현대건설 특허 'H 사일런트 홈 시스템' 전 가구 적용 (팬트리·드레스룸 등 일부 공간 제외)</p></div>
-    <div class="f"><div class="v">수납 특화</div><h4>드레스룸 · 팬트리</h4><p>드레스룸과 팬트리(알파룸)로 수납공간 극대화</p></div>
-    <div class="f"><div class="v">브랜드</div><h4>양산 첫 힐스테이트</h4><p>현대건설 프리미엄 브랜드의 양산 첫 단지</p></div>
-  </div>
-  <div class="comm">
-    <h4>커뮤니티</h4>
-    <div class="items"><span>실내 골프연습장</span><span>피트니스</span><span>힐스 라운지</span><span>스터디 라운지</span><span>H아이숲 (실내 놀이공간)</span></div>
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>8</span></div>
-</section>
-
-<!-- 9. FUTURE -->
-<section class="slide">
-  <div class="eyebrow">08 · 미래가치</div>
-  <h2>공급 희소성 + 개발 호재</h2>
-  <p class="lead">약 10년 만의 신규 공급과 광역 교통망 확충이 함께 진행되고 있습니다.</p>
-  <div class="tl">
-    <div class="axis"></div>
-    <div class="ev" style="left:8%"><div class="d">2015 ~</div><div class="pt"></div><h5>신규 공급 공백</h5><p>가촌리 일대 약 10년간<br>신규 아파트 공급 없음</p></div>
-    <div class="ev" style="left:30%"><div class="d">2026.11</div><div class="pt"></div><h5>KTX 물금역 착공 예정</h5><p>보도 기준</p></div>
-    <div class="ev" style="left:51%"><div class="d">2026.12</div><div class="pt"></div><h5>양산선 개통 목표</h5><p>노포 ~ 북정 · 7개역</p></div>
-    <div class="ev star" style="left:72%"><div class="d">2029.04</div><div class="pt"></div><h5>입주 예정</h5><p>힐스테이트 양산더스카이</p></div>
-    <div class="ev" style="left:92%"><div class="d">2031</div><div class="pt"></div><h5>부울 광역철도</h5><p>개통 목표 · 47.6㎞</p></div>
-  </div>
-  <div class="fut">
-    <div class="box">
-      <h4>인근 시세 흐름 (실거래)</h4>
-      <svg width="330" height="150" viewBox="0 0 330 150" role="img" aria-label="양산대방노블랜드8차로얄카운티 84㎡ 실거래가 비교">
-        <g font-family="NSKR">
-          <!-- scale: 0~7억 → 0~120px baseline y=120 -->
-          <line x1="10" y1="120" x2="320" y2="120" stroke="#cfd5de"/>
-          <rect x="40" y="37.2" width="70" height="82.8" rx="4" fill="#8aa6c4"/>
-          <text x="75" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#1b2330">4.83억</text>
-          <text x="75" y="140" text-anchor="middle" font-size="12" fill="#4a5566">2026.02</text>
-          <rect x="140" y="23.3" width="70" height="96.7" rx="4" fill="#2466a8"/>
-          <text x="175" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1b2330">5.64억</text>
-          <text x="175" y="140" text-anchor="middle" font-size="12" fill="#4a5566">2026.08</text>
-          <text x="258" y="60" text-anchor="middle" font-size="22" font-weight="900" fill="#b07a1c">+약 8천만</text>
-          <text x="258" y="82" text-anchor="middle" font-size="12" fill="#4a5566">6개월</text>
-        </g>
-      </svg>
-      <p style="font-size:13px">양산대방노블랜드8차로얄카운티 84㎡ 18층 · 2026.08 <b>5.64억</b></p>
-    </div>
-    <div class="box"><h4>국가 계획</h4><p>국정운영 5개년 계획안에 <b>양산시 일대 UN 국제물류센터 유치</b> 포함</p></div>
-    <div class="box"><h4>의료·바이오</h4><p>양산부산대병원 중심 <b>동남권 의료 클러스터 · 바이오 랩 허브</b> 사업 국비 5억원 확보</p></div>
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>9</span></div>
-</section>
-
-<!-- 10. SUMMARY -->
-<section class="slide">
-  <div class="eyebrow">09 · 핵심 요약</div>
-  <h2>힐스테이트 양산더스카이를 선택해야 하는 이유</h2>
-  <div class="sum">
-    <div class="s"><div class="n">01</div><h4>10년 만의 신축</h4><p>물금 가촌리 일대 약 10년 만의 신규 아파트 · 양산 첫 힐스테이트 브랜드</p></div>
-    <div class="s"><div class="n">02</div><h4>교통 호재 집중</h4><p>양산선 2026.12 개통 목표 · KTX 물금역 · 부산 2호선 증산역 · 부울 광역철도 계획</p></div>
-    <div class="s"><div class="n">03</div><h4>합리적인 가격</h4><p>84㎡ 5억원 초반대(최고가 기준) · 계약금 5% · 중도금 무이자</p></div>
-    <div class="s"><div class="n">04</div><h4>규제 부담 없음</h4><p>비규제지역 · 전매제한 없음</p></div>
-    <div class="s"><div class="n">05</div><h4>완성된 생활권</h4><p>양산부산대병원 · 이마트 · 초중고 · 양산디자인공원 · 체육센터 인접</p></div>
-    <div class="s"><div class="n">06</div><h4>상품 경쟁력</h4><p>4Bay 판상형 · 천장고 2.4m · 유리난간 · H 사일런트 층간소음 저감</p></div>
-  </div>
-  <div class="disc">
-    ※ 본 자료는 2026년 6~8월 언론 보도(한국경제, 서울경제, 이데일리, 뉴시스, 아시아경제, 경남도민일보 등) 및 현대건설 힐스테이트 분양 페이지 공개 정보를 바탕으로 작성한 상담 참고용 자료입니다.<br>
-    ※ 분양가·계약조건·입주시기·개발계획은 변경될 수 있으며, 최종 내용은 반드시 입주자모집공고 및 공급계약서를 확인하시기 바랍니다. 개발 호재는 계획·보도 기준으로 실현 여부나 시기가 달라질 수 있습니다.
-  </div>
-  <div class="foot"><span>힐스테이트 양산더스카이 고객 브리핑</span><span>10</span></div>
-</section>
-
+<script>
+// 와플 차트 10x10 (84㎡ 88칸)
+(function(){
+  var g=document.getElementById('waffle'), ns='http://www.w3.org/2000/svg', s=36, gap=4;
+  for(var i=0;i<100;i++){
+    var r=document.createElementNS(ns,'rect'), row=Math.floor(i/10), col=i%10;
+    r.setAttribute('x',col*(s+gap)); r.setAttribute('y',(9-row)*(s+gap));
+    r.setAttribute('width',s); r.setAttribute('height',s); r.setAttribute('rx',5);
+    r.setAttribute('fill', i<88 ? '#2466a8' : '#e9c77b');
+    g.appendChild(r);
+  }
+})();
+</script>
 </body>
 </html>
