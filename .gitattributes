@@ -1,0 +1,3 @@
+*.bat binary
+*.ps1 -text
+*.ahk -text
