@@ -8,7 +8,9 @@
 ;   F9   제목 타이핑   (제목칸 클릭해서 커서 두고 누르기)
 ;   F10  본문 타이핑   (본문 클릭해서 커서 두고 누르기)
 ;   F11  다른 글 파일 선택 (고르면 그 글에 고정)
-;   Esc  타이핑 중단
+;   Esc  타이핑 중단 (마우스 클릭 · 다른 창으로 넘어가도 멈춘다)
+;        멈춘 자리는 기억해 둔다. 커서를 글 끝에 두고 F9/F10 을 다시 누르면
+;        "이어서 / 처음부터" 를 묻고, 이어서를 고르면 멈춘 다음 글자부터 친다.
 ;
 ;  [서식 유지가 필요할 때 - 붙여넣기 방식]
 ;   Ctrl+Alt+1  제목 붙여넣기
@@ -38,6 +40,11 @@ COMMA_PAUSE := 130    ; 쉼표에서 추가로 쉬는 시간
 LINE_PAUSE  := 550    ; 줄을 바꾼 뒤 쉬는 시간
 THINK_ODDS  := 45     ; 이 확률(1/45)로 잠깐 멈칫한다. 0 이면 끔
 
+; 멈춘 자리. 제목("title")·본문("body") 따로 {file, pos, ctx} 로 둔다.
+; ctx 는 멈추기 직전에 친 글자들 — 멈춘 뒤 글을 고쳐도 이걸로 자리를 다시 찾는다.
+Resume     := Map()
+RESUME_CTX := 40
+
 TraySetIcon("shell32.dll", 70)
 A_IconTip := "네이버포스팅 (대기 중)"
 BuildTray()
@@ -62,7 +69,8 @@ ShowHelp() {
          . "  F10  본문 클릭 후 누르면 본문 타이핑`n"
          . "  F11  다른 글 파일 선택 (고른 글에 고정)`n"
          . "  Ctrl+Alt+9  최신 글 자동 추적으로 되돌리기`n"
-         . "  Esc  타이핑 중단`n`n"
+         . "  Esc  타이핑 중단 (클릭하거나 다른 창으로 가도 멈춤)`n"
+         . "       → 커서를 글 끝에 두고 F9/F10 다시 누르면 멈춘 곳부터 이어서`n`n"
          . "  Ctrl+Alt+2  본문 붙여넣기 (서식 유지, 빠름)`n"
          . "  Ctrl+Alt+3  태그 클립보드로`n`n"
          . "현재 글: " (CurFile = "" ? "(선택 안 됨)" : RegExReplace(CurFile, ".*\\")),
@@ -157,7 +165,7 @@ LoadClip(part, label) {
 ; ---------- 실제 타이핑 ----------
 
 TypeOut(part, label) {
-    global CHAR_MIN, CHAR_MAX, SENT_PAUSE, COMMA_PAUSE, LINE_PAUSE, THINK_ODDS, CurFile
+    global CHAR_MIN, CHAR_MAX, SENT_PAUSE, COMMA_PAUSE, LINE_PAUSE, THINK_ODDS, CurFile, Resume
     target := WinExist("A")
 
     ToolTip(label " 준비 중...")
@@ -166,78 +174,126 @@ TypeOut(part, label) {
         ToolTip()
         return
     }
-    txt := Trim(A_Clipboard, " `t`r`n")     ; 평문. 앞뒤 빈 줄은 버린다
+    txt := Trim(StrReplace(A_Clipboard, "`r"), " `t`n")     ; 평문. 앞뒤 빈 줄은 버린다
     if (txt = "") {
         ToolTip()
         MsgBox("입력할 내용이 비어 있습니다: " label)
         return
     }
+    totalChars := StrLen(txt)
 
-    ; 변환 중 포커스가 튀었으면 원래 창으로 되돌린다
+    ToolTip()
+    pos := AskResume(part, label, txt)     ; 0 = 처음부터, -1 = 그만
+    if (pos < 0)
+        return
+
+    ; 변환 중이나 물어보는 동안 포커스가 튀었으면 원래 창으로 되돌린다
     if (target && !WinActive(target)) {
         WinActivate(target)
         if !WinWaitActive(target, , 2) {
-            ToolTip()
             MsgBox("대상 창이 바뀌었습니다. 입력할 자리를 다시 클릭하고 실행하세요.")
             return
         }
     }
     Sleep(150)
 
-    lines      := StrSplit(txt, "`n", "`r")
-    totalChars := StrLen(txt)
-    done       := 0
-    est        := Round(totalChars * (CHAR_MIN + CHAR_MAX) / 2 / 1000 / 60, 1)
-    ToolTip(label " 타이핑 시작   [" RegExReplace(CurFile, ".*\\\\") "]`n"
+    est := Round((totalChars - pos) * (CHAR_MIN + CHAR_MAX) / 2 / 1000 / 60, 1)
+    ToolTip(label (pos ? " 이어서 타이핑 (" Pct(pos, totalChars) "%부터)" : " 타이핑 시작")
+          . "   [" RegExReplace(CurFile, ".*\\") "]`n"
           . "약 " est "분 예상 — 글이 다르면 Esc 누르고 F11 로 파일 변경")
 
-    for i, ln in lines {
-        if (i > 1) {
+    while (pos < totalChars) {
+        ; 중단 장치 — 엉뚱한 곳에 계속 쏟아붓지 않도록 글자마다 확인하고, 멈춘 자리를 기억한다
+        why := ""
+        if GetKeyState("Esc", "P")
+            why := label " 중단됨"
+        else if (GetKeyState("LButton", "P") || GetKeyState("RButton", "P"))
+            why := "클릭해서 " label " 중단"
+        else if (target && !WinActive(target))
+            why := "대상 창이 바뀌어 " label " 중단"
+        if (why != "") {
+            SaveResume(part, txt, pos)
+            ToolTip(why " (" Pct(pos, totalChars) "%)`n"
+                  . "커서를 글 끝에 두고 " (part = "title" ? "F9" : "F10") " 누르면 이어서 입력합니다")
+            SetTimer(() => ToolTip(), -5000)
+            return
+        }
+
+        ch := SubStr(txt, pos + 1, 1)
+        if (ch = "`n") {
             Send("{Enter}")
+            pos += 1
+            ToolTip(label " 입력 중... " Pct(pos, totalChars) "%   (Esc 중단)")
             Sleep(LINE_PAUSE)
+            continue
         }
 
-        p := 1, len := StrLen(ln)
-        while (p <= len) {
-            ; 중단 장치 — 엉뚱한 곳에 계속 쏟아붓지 않도록 글자마다 확인
-            if GetKeyState("Esc", "P") {
-                ToolTip(label " 중단됨 (" Round(done / totalChars * 100) "%)")
-                SetTimer(() => ToolTip(), -2500)
-                return
-            }
-            if (target && !WinActive(target)) {
-                ToolTip("대상 창이 바뀌어 중단했습니다 (" Round(done / totalChars * 100) "%)")
-                SetTimer(() => ToolTip(), -3000)
-                return
-            }
-
-            ; 이모지 같은 서로게이트 쌍은 반쪽만 보내면 깨지므로 두 단위를 한 글자로 본다
-            ch := SubStr(ln, p, 1)
-            n  := 1
-            if (Ord(ch) >= 0xD800 && Ord(ch) <= 0xDBFF) {
-                ch := SubStr(ln, p, 2)
-                n  := 2
-            }
-            SendText(ch)
-            p    += n
-            done += n
-
-            d := Random(CHAR_MIN, CHAR_MAX)
-            if InStr(".!?", ch)
-                d += SENT_PAUSE
-            else if InStr(",", ch)
-                d += COMMA_PAUSE
-            if (THINK_ODDS > 0 && Random(1, THINK_ODDS) = 1)
-                d += Random(300, 900)      ; 가끔 멈칫
-            Sleep(d)
+        ; 이모지 같은 서로게이트 쌍은 반쪽만 보내면 깨지므로 두 단위를 한 글자로 본다
+        n := 1
+        if (Ord(ch) >= 0xD800 && Ord(ch) <= 0xDBFF) {
+            ch := SubStr(txt, pos + 1, 2)
+            n  := 2
         }
+        SendText(ch)
+        pos += n
 
-        ToolTip(label " 입력 중... " Round(done / totalChars * 100) "%   (Esc 중단)")
+        d := Random(CHAR_MIN, CHAR_MAX)
+        if InStr(".!?", ch)
+            d += SENT_PAUSE
+        else if InStr(",", ch)
+            d += COMMA_PAUSE
+        if (THINK_ODDS > 0 && Random(1, THINK_ODDS) = 1)
+            d += Random(300, 900)      ; 가끔 멈칫
+        Sleep(d)
     }
 
+    if Resume.Has(part)
+        Resume.Delete(part)
     ToolTip()
-    TrayTip(label " 타이핑 완료 (" totalChars "자)`n" RegExReplace(CurFile, ".*\\\\"), "네이버포스팅")
+    TrayTip(label " 타이핑 완료 (" totalChars "자)`n" RegExReplace(CurFile, ".*\\"), "네이버포스팅")
 }
+
+; 같은 글을 치다 멈춘 적이 있으면 어디서부터 칠지 묻는다. 시작 위치(0 = 처음부터), 그만이면 -1.
+AskResume(part, label, txt) {
+    global Resume, CurFile
+    if !Resume.Has(part)
+        return 0
+    r := Resume[part]
+    if (r.file != CurFile || r.pos <= 0)
+        return 0
+    pos := r.pos
+    ; 멈춘 뒤 글을 고쳤으면 글자 수가 달라지므로, 마지막으로 친 글자들을 찾아 자리를 다시 잡는다
+    k := StrLen(r.ctx)
+    if (SubStr(txt, pos - k + 1, k) != r.ctx) {
+        at := InStr(txt, r.ctx)
+        pos := at ? at + k - 1 : 0
+    }
+    if (pos <= 0 || pos >= StrLen(txt))
+        return 0
+
+    ans := MsgBox(label "을(를) " Pct(pos, StrLen(txt)) "%까지 치다 멈췄습니다.`n`n"
+        . "▶ 마지막으로 입력된 부분`n…" Vis(SubStr(txt, Max(1, pos - 29), Min(pos, 30))) "`n`n"
+        . "▶ 이어서 입력할 부분`n" Vis(SubStr(txt, pos + 1, 30)) "…`n`n"
+        . "커서가 '마지막으로 입력된 부분' 바로 뒤에 있어야 합니다.`n"
+        . "(그 뒤에 잘못 들어간 글자가 있으면 먼저 지우세요)`n`n"
+        . "예 = 이어서 입력`n아니요 = 처음부터 다시`n취소 = 그만", "네이버포스팅", "YesNoCancel Icon?")
+    if (ans = "Cancel")
+        return -1
+    if (ans = "No") {
+        Resume.Delete(part)
+        return 0
+    }
+    return pos
+}
+
+SaveResume(part, txt, pos) {
+    global Resume, CurFile, RESUME_CTX
+    k := Min(pos, RESUME_CTX)
+    Resume[part] := {file: CurFile, pos: pos, ctx: SubStr(txt, pos - k + 1, k)}
+}
+
+Pct(a, b) => Round(a / b * 100)
+Vis(s) => StrReplace(s, "`n", "⏎")
 
 ; ---------- 붙여넣기 (서식 유지 폴백) ----------
 
