@@ -1,0 +1,286 @@
+﻿#Requires AutoHotkey v2.0
+#SingleInstance Force
+
+; 네이버 블로그 자동 타이핑
+; 마크다운 글을 커서가 놓인 자리에 실제 키 입력으로 쳐 넣는다.
+;
+;  [브라우저 창에서만 동작]
+;   F9   제목 타이핑   (제목칸 클릭해서 커서 두고 누르기)
+;   F10  본문 타이핑   (본문 클릭해서 커서 두고 누르기)
+;   F11  다른 글 파일 선택 (고르면 그 글에 고정)
+;   Esc  타이핑 중단
+;
+;  [서식 유지가 필요할 때 - 붙여넣기 방식]
+;   Ctrl+Alt+1  제목 붙여넣기
+;   Ctrl+Alt+2  본문 붙여넣기 (소제목/굵게/표 살아 있음)
+;   Ctrl+Alt+3  태그 클립보드로
+;   Ctrl+Alt+0  다른 글 파일 선택
+;   Ctrl+Alt+9  최신 글 자동 추적으로 되돌리기
+;   Ctrl+Alt+Q  종료
+;
+; 좌표 클릭은 쓰지 않는다. 제목을 넣으면 제목칸 높이가 늘어나
+; 본문 좌표가 밀려서 본문이 제목칸에 들어가 버린다.
+
+PS_PATH  := A_ScriptDir "\md2clip.ps1"
+; 글이 저장되는 곳. 이 아래에서 가장 최근에 저장된 .md 를 자동으로 잡는다.
+POST_DIRS := ["C:\Users\jhm58\OneDrive\Documents\ClaudeVault\네이버블로그"
+            , "C:\Users\jhm58\OneDrive\바탕 화면\블로그 포스팅"]
+SKIP_DIRS := ["_자동화", "_시스템", "reference", ".obsidian", ".trash"]
+CurFile  := ""
+Pinned   := false      ; F11 로 직접 고르면 true. 그 전까지는 항상 최신 글을 따라간다.
+
+; 사람 타자 리듬 손잡이. 전체적으로 빠르면 CHAR_MIN/MAX 를 올린다.
+; 기준: 글자당 평균 90ms ≈ 분당 660타 정도의 체감.
+CHAR_MIN    := 55     ; 글자당 최소 간격(ms)
+CHAR_MAX    := 130    ; 글자당 최대 간격(ms)
+SENT_PAUSE  := 400    ; 문장 끝(. ! ?) 에서 추가로 쉬는 시간
+COMMA_PAUSE := 130    ; 쉼표에서 추가로 쉬는 시간
+LINE_PAUSE  := 550    ; 줄을 바꾼 뒤 쉬는 시간
+THINK_ODDS  := 45     ; 이 확률(1/45)로 잠깐 멈칫한다. 0 이면 끔
+
+TraySetIcon("shell32.dll", 70)
+A_IconTip := "네이버포스팅 (대기 중)"
+BuildTray()
+; 부팅마다 파일 선택 창이 뜨면 성가시므로 조용히 대기한다.
+; 글 파일은 F9/F10 을 처음 누를 때 물어본다.
+
+BuildTray() {
+    tm := A_TrayMenu
+    tm.Delete()
+    tm.Add("글 파일 선택`tF11", (*) => PickFile())
+    tm.Add("최신 글 자동 추적`tCtrl+Alt+9", (*) => Unpin())
+    tm.Add()
+    tm.Add("사용법 보기", (*) => ShowHelp())
+    tm.Add("종료", (*) => ExitApp())
+    tm.Default := "글 파일 선택`tF11"
+}
+
+ShowHelp() {
+    global CurFile
+    MsgBox("브라우저(네이버 글쓰기) 창에서만 동작합니다.`n`n"
+         . "  F9   제목칸 클릭 후 누르면 제목 타이핑`n"
+         . "  F10  본문 클릭 후 누르면 본문 타이핑`n"
+         . "  F11  다른 글 파일 선택 (고른 글에 고정)`n"
+         . "  Ctrl+Alt+9  최신 글 자동 추적으로 되돌리기`n"
+         . "  Esc  타이핑 중단`n`n"
+         . "  Ctrl+Alt+2  본문 붙여넣기 (서식 유지, 빠름)`n"
+         . "  Ctrl+Alt+3  태그 클립보드로`n`n"
+         . "현재 글: " (CurFile = "" ? "(선택 안 됨)" : RegExReplace(CurFile, ".*\\")),
+           "네이버포스팅 사용법")
+}
+
+; ---------- 글 파일 ----------
+
+; 두 보관 폴더를 통틀어 가장 최근에 저장된 글. 방금 쓴 글이 여기 걸린다.
+NewestMd() {
+    global POST_DIRS, SKIP_DIRS
+    best := "", bestT := 0
+    for dir in POST_DIRS {
+        if !DirExist(dir)
+            continue
+        Loop Files, dir "\*.md", "R" {
+            skip := false
+            for sd in SKIP_DIRS
+                if InStr(A_LoopFileDir, "\" sd)
+                    skip := true
+            if skip
+                continue
+            t := A_LoopFileTimeModified + 0
+            if (t > bestT) {
+                bestT := t
+                best  := A_LoopFileFullPath
+            }
+        }
+    }
+    return best
+}
+
+; 고정(F11)해 두지 않았으면 누를 때마다 최신 글로 갈아탄다.
+EnsureFile() {
+    global CurFile, Pinned
+    if !Pinned {
+        f := NewestMd()
+        if (f != "" && f != CurFile) {
+            CurFile := f
+            A_IconTip := "네이버포스팅(최신): " RegExReplace(f, ".*\\")
+            TrayTip("최신 글을 잡았습니다", RegExReplace(f, ".*\\"))
+        }
+    }
+    if (CurFile != "" && FileExist(CurFile))
+        return true
+    return PickFile()
+}
+
+Unpin() {
+    global CurFile, Pinned
+    Pinned  := false
+    CurFile := ""
+    A_IconTip := "네이버포스팅 (최신 글 자동)"
+    TrayTip("이제 가장 최근에 저장된 글을 따라갑니다", "네이버포스팅")
+}
+
+PickFile() {
+    global CurFile, Pinned, POST_DIRS
+    SplitPath(CurFile, , &curDir)
+    start := (curDir != "") ? curDir : POST_DIRS[1]
+    f := FileSelect(3, start "\", "포스팅할 마크다운 파일 선택", "Markdown (*.md)")
+    if (f = "")
+        return (CurFile != "")          ; 취소해도 상주는 유지
+    CurFile := f
+    Pinned  := true                     ; 직접 골랐으면 그 글에 고정
+    A_IconTip := "네이버포스팅: " RegExReplace(f, ".*\\")
+    TrayTip("제목칸 클릭 후 F9 / 본문 클릭 후 F10", RegExReplace(f, ".*\\"))
+    return true
+}
+
+; 마크다운의 한 부분을 클립보드에 올린다. 성공하면 true.
+; (평문은 클립보드의 텍스트 형식, 서식본은 HTML 형식으로 함께 올라간다)
+LoadClip(part, label) {
+    global PS_PATH, CurFile
+    if !EnsureFile()                     ; 고정 안 했으면 가장 최근에 저장된 글을 쓴다
+        return false
+    if !FileExist(CurFile) {
+        MsgBox("글 파일을 찾을 수 없습니다:`n" CurFile "`n`nF11 로 다시 선택하세요.")
+        return false
+    }
+    A_Clipboard := ""
+    cmd := 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' PS_PATH '"'
+         . ' -Path "' CurFile '" -Part ' part
+    RunWait(cmd, A_ScriptDir, "Hide")
+    if !ClipWait(5, 1) {
+        MsgBox("변환 실패: " label "`n글 파일이 UTF-8 인코딩인지 확인하세요.")
+        return false
+    }
+    return true
+}
+
+; ---------- 실제 타이핑 ----------
+
+TypeOut(part, label) {
+    global CHAR_MIN, CHAR_MAX, SENT_PAUSE, COMMA_PAUSE, LINE_PAUSE, THINK_ODDS, CurFile
+    target := WinExist("A")
+
+    ToolTip(label " 준비 중...")
+
+    if !LoadClip(part, label) {
+        ToolTip()
+        return
+    }
+    txt := Trim(A_Clipboard, " `t`r`n")     ; 평문. 앞뒤 빈 줄은 버린다
+    if (txt = "") {
+        ToolTip()
+        MsgBox("입력할 내용이 비어 있습니다: " label)
+        return
+    }
+
+    ; 변환 중 포커스가 튀었으면 원래 창으로 되돌린다
+    if (target && !WinActive(target)) {
+        WinActivate(target)
+        if !WinWaitActive(target, , 2) {
+            ToolTip()
+            MsgBox("대상 창이 바뀌었습니다. 입력할 자리를 다시 클릭하고 실행하세요.")
+            return
+        }
+    }
+    Sleep(150)
+
+    lines      := StrSplit(txt, "`n", "`r")
+    totalChars := StrLen(txt)
+    done       := 0
+    est        := Round(totalChars * (CHAR_MIN + CHAR_MAX) / 2 / 1000 / 60, 1)
+    ToolTip(label " 타이핑 시작   [" RegExReplace(CurFile, ".*\\\\") "]`n"
+          . "약 " est "분 예상 — 글이 다르면 Esc 누르고 F11 로 파일 변경")
+
+    for i, ln in lines {
+        if (i > 1) {
+            Send("{Enter}")
+            Sleep(LINE_PAUSE)
+        }
+
+        p := 1, len := StrLen(ln)
+        while (p <= len) {
+            ; 중단 장치 — 엉뚱한 곳에 계속 쏟아붓지 않도록 글자마다 확인
+            if GetKeyState("Esc", "P") {
+                ToolTip(label " 중단됨 (" Round(done / totalChars * 100) "%)")
+                SetTimer(() => ToolTip(), -2500)
+                return
+            }
+            if (target && !WinActive(target)) {
+                ToolTip("대상 창이 바뀌어 중단했습니다 (" Round(done / totalChars * 100) "%)")
+                SetTimer(() => ToolTip(), -3000)
+                return
+            }
+
+            ; 이모지 같은 서로게이트 쌍은 반쪽만 보내면 깨지므로 두 단위를 한 글자로 본다
+            ch := SubStr(ln, p, 1)
+            n  := 1
+            if (Ord(ch) >= 0xD800 && Ord(ch) <= 0xDBFF) {
+                ch := SubStr(ln, p, 2)
+                n  := 2
+            }
+            SendText(ch)
+            p    += n
+            done += n
+
+            d := Random(CHAR_MIN, CHAR_MAX)
+            if InStr(".!?", ch)
+                d += SENT_PAUSE
+            else if InStr(",", ch)
+                d += COMMA_PAUSE
+            if (THINK_ODDS > 0 && Random(1, THINK_ODDS) = 1)
+                d += Random(300, 900)      ; 가끔 멈칫
+            Sleep(d)
+        }
+
+        ToolTip(label " 입력 중... " Round(done / totalChars * 100) "%   (Esc 중단)")
+    }
+
+    ToolTip()
+    TrayTip(label " 타이핑 완료 (" totalChars "자)`n" RegExReplace(CurFile, ".*\\\\"), "네이버포스팅")
+}
+
+; ---------- 붙여넣기 (서식 유지 폴백) ----------
+
+PasteHere(part, label) {
+    target := WinExist("A")
+    ToolTip(label " 변환 중...")
+    if !LoadClip(part, label) {
+        ToolTip()
+        return
+    }
+    if (target && !WinActive(target)) {
+        WinActivate(target)
+        WinWaitActive(target, , 2)
+    }
+    Sleep(120)
+    Send("^v")
+    ToolTip()
+    TrayTip(label " 붙여넣기 완료", "네이버포스팅")
+}
+
+CopyOnly(part, label) {
+    if LoadClip(part, label)
+        TrayTip(label " 복사 완료 - 필요한 곳에서 Ctrl+V", "네이버포스팅")
+}
+
+; ---------- 단축키 ----------
+; F9~F11 을 전역으로 잡으면 다른 앱의 기능키를 뺏으므로 브라우저에서만 켠다.
+
+InBrowser() {
+    return WinActive("ahk_exe chrome.exe")  || WinActive("ahk_exe msedge.exe")
+        || WinActive("ahk_exe whale.exe")   || WinActive("ahk_exe firefox.exe")
+        || WinActive("ahk_exe brave.exe")
+}
+
+#HotIf InBrowser()
+F9::  TypeOut("title", "제목")
+F10:: TypeOut("body",  "본문")
+F11:: PickFile()
+#HotIf
+
+^!1:: PasteHere("title", "제목")
+^!2:: PasteHere("body",  "본문")
+^!3:: CopyOnly("tags",  "태그")
+^!0:: PickFile()
+^!9:: Unpin()
+^!q:: ExitApp()
