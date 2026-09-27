@@ -12,6 +12,13 @@
 ;        멈춘 자리는 기억해 둔다. 커서를 글 끝에 두고 F9/F10 을 다시 누르면
 ;        "이어서 / 처음부터" 를 묻고, 이어서를 고르면 멈춘 다음 글자부터 친다.
 ;
+;  [Claude 가 쓴 글 자동으로 받기]
+;   Claude 에게 "블로그 글 써줘" 하면 GitHub 저장소 posts/ 에 올라온다.
+;   이 스크립트가 1분마다 받아와 옵시디언 네이버블로그\Claude 폴더에 저장하고,
+;   옵시디언에서 열어 준 뒤 네이버 글쓰기 창을 열지 묻는다. 그 글이 곧 F9/F10 대상이 된다.
+;   Ctrl+Alt+S  지금 바로 받기
+;   (sync-posts.ps1 을 이 스크립트 옆에 두고, PC 에 git 이 깔려 있어야 한다)
+;
 ;  [서식 유지가 필요할 때 - 붙여넣기 방식]
 ;   Ctrl+Alt+1  제목 붙여넣기
 ;   Ctrl+Alt+2  본문 붙여넣기 (소제목/굵게/표 살아 있음)
@@ -30,6 +37,16 @@ POST_DIRS := ["C:\Users\jhm58\OneDrive\Documents\ClaudeVault\네이버블로그"
 SKIP_DIRS := ["_자동화", "_시스템", "reference", ".obsidian", ".trash"]
 CurFile  := ""
 Pinned   := false      ; F11 로 직접 고르면 true. 그 전까지는 항상 최신 글을 따라간다.
+Typing   := false      ; 타이핑 중에는 글 받기를 쉰다 (창이 뜨면 타이핑이 끊긴다)
+
+; Claude 가 쓴 글을 받아올 곳
+SYNC_PS    := A_ScriptDir "\sync-posts.ps1"
+REPO_URL   := "https://github.com/jeonghyemin9233-maker/-.git"
+REPO_DIR   := A_AppData "\네이버포스팅\repo"   ; 저장소 사본. 처음 한 번 자동으로 받는다
+INBOX_DIR  := POST_DIRS[1] "\Claude"           ; 받은 글을 저장할 옵시디언 폴더
+SYNC_EVERY := 60000                             ; 몇 ms 마다 확인할지
+WRITE_URL  := "https://blog.naver.com/GoBlogWrite.naver"   ; 네이버 블로그 글쓰기
+SyncErrShown := false
 
 ; 사람 타자 리듬 손잡이. 전체적으로 빠르면 CHAR_MIN/MAX 를 올린다.
 ; 기준: 글자당 평균 90ms ≈ 분당 660타 정도의 체감.
@@ -48,6 +65,8 @@ RESUME_CTX := 40
 TraySetIcon("shell32.dll", 70)
 A_IconTip := "네이버포스팅 (대기 중)"
 BuildTray()
+SetTimer(() => SyncPosts(), -3000)
+SetTimer(() => SyncPosts(), SYNC_EVERY)
 ; 부팅마다 파일 선택 창이 뜨면 성가시므로 조용히 대기한다.
 ; 글 파일은 F9/F10 을 처음 누를 때 물어본다.
 
@@ -56,6 +75,7 @@ BuildTray() {
     tm.Delete()
     tm.Add("글 파일 선택`tF11", (*) => PickFile())
     tm.Add("최신 글 자동 추적`tCtrl+Alt+9", (*) => Unpin())
+    tm.Add("Claude 글 지금 받기`tCtrl+Alt+S", (*) => SyncPosts(true))
     tm.Add()
     tm.Add("사용법 보기", (*) => ShowHelp())
     tm.Add("종료", (*) => ExitApp())
@@ -72,7 +92,8 @@ ShowHelp() {
          . "  Esc  타이핑 중단 (클릭하거나 다른 창으로 가도 멈춤)`n"
          . "       → 커서를 글 끝에 두고 F9/F10 다시 누르면 멈춘 곳부터 이어서`n`n"
          . "  Ctrl+Alt+2  본문 붙여넣기 (서식 유지, 빠름)`n"
-         . "  Ctrl+Alt+3  태그 클립보드로`n`n"
+         . "  Ctrl+Alt+3  태그 클립보드로`n"
+         . "  Ctrl+Alt+S  Claude 가 쓴 글 지금 받기 (1분마다 자동)`n`n"
          . "현재 글: " (CurFile = "" ? "(선택 안 됨)" : RegExReplace(CurFile, ".*\\")),
            "네이버포스팅 사용법")
 }
@@ -162,7 +183,86 @@ LoadClip(part, label) {
     return true
 }
 
+; ---------- Claude 가 쓴 글 받기 ----------
+
+; GitHub 에 올라온 새 글을 옵시디언으로 가져온다. manual 이면 결과를 항상 알려 준다.
+SyncPosts(manual := false) {
+    global SYNC_PS, REPO_URL, REPO_DIR, INBOX_DIR, Typing, SyncErrShown
+    static busy := false
+    if (busy || Typing)
+        return
+    if !FileExist(SYNC_PS) {
+        if manual
+            MsgBox("sync-posts.ps1 이 없습니다:`n" SYNC_PS, "네이버포스팅")
+        return
+    }
+    busy := true
+    out := A_Temp "\네이버포스팅_sync.txt"
+    try FileDelete(out)
+    RunWait('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' SYNC_PS '"'
+          . ' -RepoUrl "' REPO_URL '" -RepoDir "' REPO_DIR '"'
+          . ' -VaultDir "' INBOX_DIR '" -OutFile "' out '"', A_ScriptDir, "Hide")
+    busy := false
+    txt := FileExist(out) ? Trim(FileRead(out, "UTF-8"), " `r`n") : ""
+
+    if (SubStr(txt, 1, 6) = "ERROR`t") {
+        if (manual || !SyncErrShown)             ; 1분마다 같은 오류로 귀찮게 하지 않는다
+            TrayTip(SubStr(txt, 7), "Claude 글 받기 실패")
+        SyncErrShown := true
+        return
+    }
+    SyncErrShown := false
+    if (txt = "") {
+        if manual
+            TrayTip("새로 올라온 글이 없습니다", "네이버포스팅")
+        return
+    }
+    files := StrSplit(txt, "`n", "`r")
+    OnNewPost(files[files.Length], files.Length)   ; 마지막 줄이 가장 최근 글
+}
+
+; 새 글을 옵시디언에서 열고, 다음 F9/F10 대상으로 잡은 뒤 글쓰기 창을 열지 묻는다.
+OnNewPost(f, count) {
+    global CurFile, Pinned, WRITE_URL
+    Pinned  := false                             ; 최신 글 추적 = 방금 받은 글
+    CurFile := f
+    name := RegExReplace(f, ".*\\")
+    A_IconTip := "네이버포스팅(최신): " name
+    try Run("obsidian://open?path=" UriEncode(f))
+    catch
+        try Run(f)
+    ans := MsgBox("Claude 가 쓴 글이 옵시디언에 저장됐습니다"
+        . (count > 1 ? " (" count "개 중 최신)" : "") ".`n`n  " name "`n`n"
+        . "네이버 블로그 글쓰기 창을 열까요?`n"
+        . "열리면 제목칸 클릭 → F9,  본문 클릭 → F10", "네이버포스팅", "YesNo Iconi T120")
+    if (ans = "Yes")
+        Run(WRITE_URL)
+}
+
+UriEncode(s) {
+    buf := Buffer(StrPut(s, "UTF-8"))
+    StrPut(s, buf, "UTF-8")
+    out := ""
+    Loop buf.Size - 1 {
+        b := NumGet(buf, A_Index - 1, "UChar")
+        if (b >= 0x30 && b <= 0x39) || (b >= 0x41 && b <= 0x5A) || (b >= 0x61 && b <= 0x7A)
+            || b = 0x2D || b = 0x2E || b = 0x5F || b = 0x7E
+            out .= Chr(b)
+        else
+            out .= Format("%{:02X}", b)
+    }
+    return out
+}
+
 ; ---------- 실제 타이핑 ----------
+
+; 타이핑하는 동안 글 받기가 끼어들지 않게 표시해 둔다
+RunTyping(part, label) {
+    global Typing
+    Typing := true
+    try TypeOut(part, label)
+    finally Typing := false
+}
 
 TypeOut(part, label) {
     global CHAR_MIN, CHAR_MAX, SENT_PAUSE, COMMA_PAUSE, LINE_PAUSE, THINK_ODDS, CurFile, Resume
@@ -329,8 +429,8 @@ InBrowser() {
 }
 
 #HotIf InBrowser()
-F9::  TypeOut("title", "제목")
-F10:: TypeOut("body",  "본문")
+F9::  RunTyping("title", "제목")
+F10:: RunTyping("body",  "본문")
 F11:: PickFile()
 #HotIf
 
@@ -339,4 +439,5 @@ F11:: PickFile()
 ^!3:: CopyOnly("tags",  "태그")
 ^!0:: PickFile()
 ^!9:: Unpin()
+^!s:: SyncPosts(true)
 ^!q:: ExitApp()
